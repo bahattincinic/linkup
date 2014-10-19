@@ -1,0 +1,3 @@
+Template.postShow.rendered = function () {
+  // ...
+};

@@ -1,25 +1,18 @@
 Meteor.startup(function() {
+  // clean all data first
+  Posts.remove({});
+  Messages.remove({});
+  Tags.remove({});
 
-  Factory.define('item', Items, {
-    name: function() { return Fake.sentence(); },
-    rating: function() { return _.random(1, 5); }
+  // create some fake data
+  Factory.define('posts', Posts, {
+    title: function() { return Fake.sentence(); },
+    url: function () { return "http://google.com";}
   });
 
-  Factory.define('messages', Messages, {
-    body: function() { return Fake.sentence(); }
-  });
-
-  if (Items.find({}).count() === 0) {
-
+  if (Posts.find({}).count() === 0) {
     _(10).times(function(n) {
-      Factory.create('item');
+      Factory.create('posts');
     });
   }
-
-  if (Messages.find({}).count() === 0) {
-    _(10).times(function(n) {
-      Factory.create('messages');
-    });
-  }
-
 });

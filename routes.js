@@ -1,17 +1,53 @@
 Router.map(function() {
 
   this.route('home', {
-    path: '/'
+    path: '/',
+    waitOn: function() {
+      return this.subscribe("posts");
+    },
+    data: {
+      posts: Posts.find({})
+    }
+  });
+
+  this.route('post', {
+    path: '/post',
+    onBeforeAction: function() {
+      // XXX: in here if there are no
+      // Meteor.user() exists, then autocreate
+      // an anonymous user for the poster
+      // https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md#before-and-after-hooks
+    },
+    waitOn: function() {
+      // Post requires tags (aka subreddits)
+      return this.subscribe("tags");
+    },
+    data: function() {
+      // get all relevant tags here when posting
+      // XXX: get all popular 10/20 tasks here
+      // should sort by score/popularity
+      tags: Tags.find({})
+    }
+  });
+
+  this.route('postShow', {
+    path: '/post/:_id',
+    waitOn: function() {
+      console.log(this.params._id);
+      return this.subscribe("post", this.params._id);
+    },
+    data: function () {
+      console.log(this.params);
+      return {
+        post: Posts.findOne({_id: this.params._id})
+      }
+    }
   });
 
   this.route('dashboard', {
     path: '/dashboard',
     loginRequired: 'entrySignIn',
     waitOn: function() {
-      return this.subscribe("items");
-    },
-    data: {
-      items: Items.find({})
     },
     onAfterAction: function() {
       SEO.set({
