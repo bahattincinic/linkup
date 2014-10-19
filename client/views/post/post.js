@@ -16,7 +16,6 @@ Template.post.events({
       }, function (err, result) {
         if (err)
           throw err;
-        console.log(result);
         // result is post _id
       });
     } else {

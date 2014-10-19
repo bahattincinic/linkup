@@ -33,13 +33,12 @@ Router.map(function() {
   this.route('postShow', {
     path: '/post/:_id',
     waitOn: function() {
-      console.log(this.params._id);
       return this.subscribe("post", this.params._id);
     },
     data: function () {
-      console.log(this.params);
       return {
-        post: Posts.findOne({_id: this.params._id})
+        post: Posts.findOne({_id: this.params._id}),
+        messages: Messages.find({postId: this.params._id})
       }
     }
   });

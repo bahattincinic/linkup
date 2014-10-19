@@ -1,6 +1,7 @@
 Messages.allow({
   'insert': function(userId, doc) {
-    return userId;
+    return true;
+    // return userId;
   },
   'update': function(userId, doc, fields, modifier) {
     return userId;

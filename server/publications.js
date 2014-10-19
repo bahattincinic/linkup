@@ -24,7 +24,8 @@ Meteor.publishComposite("posts", function() {
   return {
     find: function() {
       // XXX: will sort this by score soon
-      return Posts.find({}, {limit: 10});
+      // return Posts.find({}, {limit: 10});
+      return Posts.find({});
     }
     // ,
     // children: [
@@ -37,11 +38,25 @@ Meteor.publishComposite("posts", function() {
   }
 });
 
-Meteor.publishComposite("post", function(postId){
+Meteor.publishComposite("post", function(postId) {
   /* publish single post for post chat page */
   return {
     find: function() {
       return Posts.find({_id: postId})
-    }
+    },
+    children : [
+      {
+        find: function (post) {
+          return Messages.find({postId: post._id})
+        }
+      }
+    ]
   }
 });
+
+
+
+
+
+
+

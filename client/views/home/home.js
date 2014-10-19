@@ -6,7 +6,6 @@ Template.home.events({
     Router.go('post');
   },
   'click .post-detail': function () {
-    console.log(this._id);
     Router.go('postShow', {_id: this._id});
   }
 });
