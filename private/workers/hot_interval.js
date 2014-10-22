@@ -1,5 +1,6 @@
 /* hot_interval worker */
 var mq = require('amqp').createConnection({host: 'localhost'});
+var hot = require('../utils/hot');
 
 var Worker = {
   lock: 'hot_interval',
@@ -24,15 +25,23 @@ mq.on('ready', function () {
         redis.exists(Worker.lock, function (err, rr) {
           if (err) throw err;
 
-          if (rr == 1)
+          if (rr == 1) {
+            console.log('Cannot obtain lock, return');
             return;
-          else {
+          } else {
             try {
-
+              console.log('Locking');
+              // set to expire in 5 mins
+              redis.setex(Worker.lock, 60 * 5, '1');
+              console.log(hot);
+              console.log('Since epoch  ' + hot.since_epoch(10));
             } finally {
+              // release lock
+              redis.del(Worker.lock);
             }
           }
         });
+
         // if (redis.get(Worker.lock)) {
         //   console.log('cannot acquire lock');
         //   return;
