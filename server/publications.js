@@ -25,7 +25,7 @@ Meteor.publishComposite("posts", function() {
     find: function() {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
-      return Posts.find({});
+      return Posts.find({}, {sort: {hot: -1, createdAt: -1, score: -1}});
     }
     // ,
     // children: [

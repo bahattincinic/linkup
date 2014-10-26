@@ -18,10 +18,11 @@ joshowens:simple-form
 meteorhacks:zones
 dburles:collection-helpers
 reywood:publish-composite
-mrt:moment
 mrt:underscore-string-latest
 matb33:collection-hooks
 fuatsengul:iron-router-auth
 dburles:factory
 anti:fake
 cunneen:mailgun
+mrt:moment
+
