@@ -17,7 +17,8 @@ var Worker = {
   queueOptions: {
     autoDelete: false,
     durable: true
-  }
+  },
+  mongourl: 'mongodb://localhost:27017/linkup'
 };
 
 var setUpInterval = function () {
@@ -31,7 +32,7 @@ var setUpInterval = function () {
 mq.on('ready', function () {
   console.log('connected queue, creating queue..');
 
-  var q = mq.queue('hot_interval', Worker.queueOptions, function(queue) {
+  var q = mq.queue(Worker.lock, Worker.queueOptions, function(queue) {
     console.log('queue ready, subscribe');
     q.bind('#');
     q.subscribe(handleMessage);
@@ -41,8 +42,7 @@ mq.on('ready', function () {
 });
 
 function handleMessage(message, headers, deliveryInfo, messageObject) {
-  console.log('message received');
-  MongoClient.connect('mongodb://localhost:27017/linkup', onDbConnect);
+  MongoClient.connect(Worker.mongourl, onDbConnect);
 };
 
 function onDbConnect(err, db) {
@@ -68,8 +68,7 @@ function updatePosts(db) {
     // set lock to expire in 5 mins
     redis.setex(Worker.lock, Worker.lockInterval, '1');
     var collection = db.collection('posts');
-    collection.count(function (err, count) {
-      var post_count = count;
+    collection.count(function (err, post_count) {
       var updated = 0;
       var cursor = collection.find({}).sort({createdAt: -1});
 
@@ -84,9 +83,13 @@ function updatePosts(db) {
             var d = moment(post.createdAt).unix();
             var hh = hot.calculate(post.score, d);
 
-            collection.update({_id: post._id},
-                              {$set: {hot: hh}},
-                              function(err, doc) {
+            collection.update({
+              _id: post._id
+            }, {
+              $set: {
+                hot: hh,
+                updatedAt: moment().utc().toDate()}
+            }, function(err, doc) {
               if (err) {
                 console.log('unable to update: ' + err);
                 return;

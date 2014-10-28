@@ -2,7 +2,6 @@ Posts = new Meteor.Collection('posts');
 
 Posts.helpers({
   age: function () {
-    console.log('asdasd');
     return moment(this.createdAt).fromNow();
   }
 });
