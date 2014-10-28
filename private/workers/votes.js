@@ -12,7 +12,6 @@ var Worker = {
   name: 'votes',              // name of the queue
   keyPrefix: 'post',
   lockInterval: 30,           // half a minute
-  // hbInterval: 1000 * 60 * 1,  // a minute
   queueOptions: {
     autoDelete: false,
     durable: true

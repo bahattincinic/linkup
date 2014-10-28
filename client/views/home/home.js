@@ -7,5 +7,11 @@ Template.home.events({
   },
   'click .post-detail': function () {
     Router.go('postShow', {_id: this._id});
+  },
+  'click .upvote': function () {
+
+  },
+  'click .downvote': function () {
+
   }
 });
