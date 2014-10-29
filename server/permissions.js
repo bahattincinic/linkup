@@ -37,3 +37,17 @@ Votes.allow({
   },
   fetch: ['owner']
 });
+
+
+Tags.allow({
+  insert: function (userId, doc) {
+    return userId;
+  },
+  update: function (userId, doc, fields, modifier) {
+    return userId;
+  },
+  remove: function (userId, doc) {
+    return false;
+  },
+  fetch: ['owner']
+});

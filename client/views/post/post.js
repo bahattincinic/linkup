@@ -26,3 +26,16 @@ Template.post.events({
     }
   }
 });
+
+
+Template.post.helpers({
+  tags: function () {
+    console.log('tagNames called');
+    return Tags.find({}).fetch().map(function(tag){ return tag.name; });
+  }
+});
+
+// Template.post.tags = function () {
+//   console.log('tagNames called');
+
+// };

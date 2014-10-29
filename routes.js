@@ -26,15 +26,14 @@ Router.map(function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
       // should sort by score/popularity
-      var names = [];
-      Tags.find({}).forEach(function(tag) {
-        names.push(tag.name);
-      });
-
+      console.log('processed tags, publish data');
       return  {
-        tags: Tags.find({}),
-        names: names
+        tags: Tags.find({})
       }
+    },
+    onAfterAction: function () {
+      console.log('onAfterAction');
+      // Meteor.typeahead.inject();
     }
   });
 
@@ -78,5 +77,13 @@ Router.map(function() {
       this.response.end(Handlebars.templates['404']());
     }
   });
+});
 
+
+Router.onRun(function() {
+  console.log('onRun');
+});
+
+Router.onStop(function() {
+  console.log('onstop');
 });
