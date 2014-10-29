@@ -18,7 +18,6 @@ Template.post.events({
           throw err;
 
         // result is post _id
-        // XXX: redirect to home after successful post maybe change
         Meteor.call('upvote', postId, Meteor.userId());
         Router.go('home');
       });
