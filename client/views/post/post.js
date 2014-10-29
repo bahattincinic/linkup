@@ -22,7 +22,7 @@ Template.post.events({
 
         // result is post _id
         Meteor.call('upvote', postId, Meteor.userId());
-        Router.go('home');
+        Router.go('/');
       });
     } else {
       throw new Meteor.Error('XXX: missing data');

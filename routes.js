@@ -1,11 +1,24 @@
+
 Router.map(function() {
   this.route('home', {
     path: '/',
     waitOn: function() {
+      console.log('bare');
       return this.subscribe("posts");
     },
     data: {
-      posts: Posts.find({}, {sort: {hot: -1, createdAt: -1, score: -1}})
+      posts: Posts.find({})
+    }
+  });
+
+  this.route('home', {
+    path: '/:page',
+    waitOn: function() {
+      console.log('paged: ' + Number(this.params.page));
+      return this.subscribe("posts", Number(this.params.page));
+    },
+    data: {
+      posts: Posts.find({})
     }
   });
 
@@ -65,20 +78,24 @@ Router.map(function() {
     waitOn: function() {
       return this.subscribe('tag', this.params.name);
     },
-    action: function() {
-      console.warn(this.params.name);
-      console.log(Tags.find().fetch().map(function(tag) { return tag.name;}));
-      if (this.ready()) {
-        this.render('tagShow', this.params.name);
-      } else {
-        this.render('loading');
-      }
-    },
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
         posts: Posts.find({}, {
             sort: {hot: -1, createdAt: -1, score: -1}})
+      }
+    }
+  });
+
+  this.route('tagShow', {
+    path: '/r/:name/:page',
+    waitOn: function() {
+      return this.subscribe('tag', this.params.name, this.params.page);
+    },
+    data: function() {
+      return {
+        tag: Tags.findOne({name: this.params.name}),
+        posts: Posts.find({})
       }
     }
   });

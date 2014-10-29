@@ -1,26 +1,39 @@
+
 Meteor.startup(function() {
-  getRandomArbitrary = function (min, max) {
-    return Math.round(Math.random() * (max - min) + min);
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  Posts.remove({});
-  Tags.remove({});
-  Messages.remove({});
+  // Posts.remove({});
+  // Tags.remove({});
+  // Messages.remove({});
+  // Votes.remove({});
+  // Meteor.users.remove({username: 'test'});
 
-  if (Posts.find().count() == 0) {
-    _(3).times(function (n) {
+  if (Tags.find({}).count() == 0) {
+    var user_id = Meteor.users.insert({username: 'test'});
+    var user = Meteor.users.findOne(user_id);
+
+    ["new", "tesla", "osman"].forEach(function (tag) {
       var tag_id = Tags.insert({
-        name: Fake.word()
+        name: tag,
+        description: "no desc"
       });
 
-      _(3).times(function(n) {
+      _(50).times(function(n) {
+        var ii = getRandomInt(2, 8000);
         var post_id = Posts.insert({
-          title: Fake.sentence(),
+          title: tag + Fake.sentence(),
           url: 'http://google.com',
           tagId: tag_id,
-          score: getRandomArbitrary(1, 100),
           hot: 0
         });
+
+        // update default score
+        Posts.update(post_id, {$set: {score: ii}});
+
+        // upvote post to trigger hotness calculation
+        Meteor.call('upvote', post_id, user_id);
 
         _(2).times(function(n) {
           Messages.insert({
@@ -28,7 +41,7 @@ Meteor.startup(function() {
             body: Fake.paragraph()
           });
         });
-      })
+      });
     });
   }
 });

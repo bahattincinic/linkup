@@ -1,5 +1,0 @@
-Template.tagShow.rendered = function() {
-};
-
-
-

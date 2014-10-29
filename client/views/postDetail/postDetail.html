@@ -1,0 +1,33 @@
+<template name="postDetail">
+<li class="list-group-item">
+  <div class='row'>
+    <div class='col-sm-2'>
+
+      {{#if currentUser }}
+        {{#if hasVoted }}
+          {{#if checkVote }}
+            <a href="#" class='downvote'> V </a>
+          {{else}}
+            <a href="#" class='upvote'> A </a>
+          {{/if}}
+        {{else}}
+          <a href="#" class='upvote'> A </a>
+          <a href="#" class='downvote'> V </a>
+        {{/if}}
+      {{/if}}
+
+      <span>{{score}}</span>
+    </div>
+
+    <div class='col-sm-8'>
+      <a class='post-detail' href='#'>{{title}}</a>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-sm-10'></div>
+    <div class='col-sm-2'>
+      <span>{{age}}</span>
+    </div>
+  </div>
+</li>
+</template>

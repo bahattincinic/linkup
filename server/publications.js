@@ -1,4 +1,3 @@
-
 Meteor.publishComposite("messages", function() {
   return {
     find: function() {
@@ -17,19 +16,27 @@ Meteor.publishComposite("tags", function() {
       return Tags.find({}, {
         sort: {createdAt: -1},
         fields: {name: 1}
-    });
+      });
     }
   }
 });
 
-Meteor.publishComposite("posts", function() {
+// home
+Meteor.publishComposite("posts", function(page) {
+  var page = page || 0;
+  var batch = 20;
+
   /* Publish posts for the home page */
   return {
-    find: function() {
+    find: function () {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
-      return Posts.find({},
-        {sort: {hot: -1, createdAt: -1, score: -1}});
+      return Posts.find({}, {
+          sort: {hot: -1, createdAt: -1, score: -1},
+          limit: batch,
+          skip: batch*page
+        }
+      );
     },
     children: [
       {
@@ -57,15 +64,23 @@ Meteor.publishComposite("post", function(postId) {
   }
 });
 
-Meteor.publishComposite('tag', function(name) {
+Meteor.publishComposite('tag', function(name, page) {
+  console.log("name: " + name + " page: " + page);
+  var batch = 20;
+  var page = page || 0;
+
   return {
-    find: function() {
+    find: function () {
       return Tags.find({name: name})
     },
     children : [
       {
         find: function (tag) {
-          return Posts.find({tagId: tag._id})
+          return Posts.find({tagId: tag._id}, {
+            sort: {hot: -1, createdAt: -1},
+            limit: batch,
+            skip: batch*page
+          })
         }
       }
     ]
