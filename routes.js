@@ -6,7 +6,7 @@ Router.map(function() {
       return this.subscribe("posts");
     },
     data: {
-      posts: Posts.find({})
+      posts: Posts.find({}, {sort: {hot: -1, createdAt: -1, score: -1}})
     }
   });
 

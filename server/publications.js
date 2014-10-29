@@ -26,15 +26,14 @@ Meteor.publishComposite("posts", function() {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
       return Posts.find({}, {sort: {hot: -1, createdAt: -1, score: -1}});
-    }
-    // ,
-    // children: [
-    //   {
-    //     find: function (post) {
-    //       return Meteor.users.find({ _id: post.createdBy})
-    //     }
-    //   }
-    // ]
+    },
+    children: [
+      {
+        find: function (post) {
+          return Votes.find({postId: post._id});
+        }
+      }
+    ]
   }
 });
 

@@ -11,7 +11,8 @@ function getRandomArbitrary(min, max) {
 }
 
 Posts.before.insert(function (userId, doc) {
+  doc.authorId = userId;
   doc.createdAt = moment().utc().toDate();
   // poster counted as upvoted
-  doc.score = getRandomArbitrary(1, 2000);
+  doc.score = 0;
 });

@@ -16,8 +16,8 @@ var Worker = {
     autoDelete: false,
     durable: true
   },
-  mongourl: 'mongodb://localhost:27017/linkup',
-  possibleVotes: [-1, 1]
+  possibleVotes: [-2, -1, 1, 2],
+  mongourl: 'mongodb://localhost:27017/linkup'
 };
 
 mq.on('ready', function () {
@@ -77,17 +77,16 @@ function processPost(message) {
           return;
         }
 
-        // update posts score, hot and updatedAt fields
+        // update posts hot and updatedAt fields
+        // score has already been updated
         var d = moment(post.createdAt).unix();
-        var newScore = post.score + message.vote;
-        var hh = hot.calculate(newScore, d);
+        var hh = hot.calculate(post.score, d);
 
         collection.update({
           _id: post._id
         }, {
           $set: {
             hot: hh,
-            score: newScore,
             updatedAt: moment().utc().toDate()}
         }, function (err) {
           if (err) {
@@ -104,5 +103,3 @@ function processPost(message) {
     redis.del(message.key);
   }
 };
-
-// aDSaL53izrkj3JbTq

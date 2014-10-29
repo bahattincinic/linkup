@@ -13,10 +13,14 @@ Template.post.events({
         title: title,
         url: url,
         channels: channels
-      }, function (err, result) {
+      }, function (err, postId) {
         if (err)
           throw err;
+
         // result is post _id
+        // XXX: redirect to home after successful post maybe change
+        Meteor.call('upvote', postId, Meteor.userId());
+        Router.go('home');
       });
     } else {
       throw new Meteor.Error('XXX: missing data');

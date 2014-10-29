@@ -11,11 +11,21 @@
             <li class="list-group-item">
               <div class='row'>
                 <div class='col-sm-2'>
-                  <a href="#" class=''> A </a>
+
+                  {{#if currentUser }}
+                    {{#if hasVoted }}
+                      {{#if checkVote }}
+                        <a href="#" class='downvote'> V </a>
+                      {{else}}
+                        <a href="#" class='upvote'> A </a>
+                      {{/if}}
+                    {{else}}
+                      <a href="#" class='upvote'> A </a>
+                      <a href="#" class='downvote'> V </a>
+                    {{/if}}
+                  {{/if}}
+
                   <span >{{score}}</span>
-                  <a href="#" class=''> V </a>
-                  <span>··</span>
-                  <span>{{hot}}</span>
                 </div>
 
                 <div class='col-sm-8'>
