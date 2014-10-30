@@ -26,7 +26,15 @@ Router.map(function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
       // should sort by score/popularity
-      tags: Tags.find({})
+      var names = [];
+      Tags.find({}).forEach(function(tag) {
+        names.push(tag.name);
+      });
+
+      return  {
+        tags: Tags.find({}),
+        names: names
+      }
     }
   });
 

@@ -14,7 +14,10 @@ Meteor.publishComposite("tags", function() {
       // XXX: maybe sort tags by popularity/score here
       // list most popular ones only
       // XXX: need limit on this 10/20 etc.
-      return Tags.find({}, {sort: {createdAt: -1}, limit: 2});
+      return Tags.find({}, {
+        sort: {createdAt: -1},
+        fields: {name: 1}
+    });
     }
   }
 });
@@ -25,7 +28,8 @@ Meteor.publishComposite("posts", function() {
     find: function() {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
-      return Posts.find({}, {sort: {hot: -1, createdAt: -1, score: -1}});
+      return Posts.find({},
+        {sort: {hot: -1, createdAt: -1, score: -1}});
     },
     children: [
       {
@@ -52,10 +56,3 @@ Meteor.publishComposite("post", function(postId) {
     ]
   }
 });
-
-
-
-
-
-
-

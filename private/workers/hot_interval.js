@@ -30,7 +30,7 @@ var setUpInterval = function () {
 };
 
 mq.on('ready', function () {
-  console.log('connected queue, creating queue..');
+  console.log('connected queue..');
 
   var q = mq.queue(Worker.lock, Worker.queueOptions, function(queue) {
     console.log('queue ready, subscribe');
