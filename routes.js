@@ -35,6 +35,18 @@ Router.map(function() {
     }
   });
 
+  this.route('tag', {
+    path: '/tag',
+    waitOn: function() {
+      return this.subscribe('tags')
+    },
+    data: function () {
+      return {
+        tags: Tags.find({})
+      }
+    }
+  });
+
   this.route('postShow', {
     path: '/post/:_id',
     waitOn: function() {

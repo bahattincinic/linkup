@@ -28,8 +28,11 @@ Template.home.helpers({
 });
 
 Template.home.events({
-'click #create_topic': function () {
+  'click #create_topic': function () {
     Router.go('post');
+  },
+  'click #create_tag': function () {
+    Router.go('tag');
   },
   'click .post-detail': function () {
     Router.go('postShow', {_id: this._id});
