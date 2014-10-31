@@ -1,5 +1,4 @@
 Router.map(function() {
-
   this.route('home', {
     path: '/',
     waitOn: function() {
@@ -33,7 +32,6 @@ Router.map(function() {
     },
     onAfterAction: function () {
       console.log('onAfterAction');
-      // Meteor.typeahead.inject();
     }
   });
 
@@ -77,13 +75,4 @@ Router.map(function() {
       this.response.end(Handlebars.templates['404']());
     }
   });
-});
-
-
-Router.onRun(function() {
-  console.log('onRun');
-});
-
-Router.onStop(function() {
-  console.log('onstop');
 });

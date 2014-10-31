@@ -30,12 +30,23 @@ Template.post.events({
 
 Template.post.helpers({
   tags: function () {
-    console.log('tagNames called');
     return Tags.find({}).fetch().map(function(tag){ return tag.name; });
+  },
+  settings: function () {
+    return {
+      position: "top",
+      limit: 5,
+      rules : [
+        {
+          token: '#',
+          collection: Tags,
+          field: "name",
+          template: Template.scrub,
+          callback: function (doc, element) {
+            console.log(doc, element);
+          }
+        }
+      ]
+    }
   }
 });
-
-// Template.post.tags = function () {
-//   console.log('tagNames called');
-
-// };

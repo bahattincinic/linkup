@@ -15,10 +15,15 @@
       </div>
       <div class="form-group">
         <label for='tag_select'>Tags</label>
-        <input type='text' class='form-control typeahead' spellcheck="off"
-          name='tags' data-source='tags' id='tag_select'/>
+        {{> inputAutocomplete settings=settings type="text" spellcheck="off"
+            id="tag_select" name="tags" class="form-control" }}
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
+</template>
+
+
+<template name="scrub">
+    <span class='badge'>{{ name }}</span>
 </template>

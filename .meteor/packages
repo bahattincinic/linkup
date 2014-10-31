@@ -25,6 +25,5 @@ dburles:factory
 anti:fake
 cunneen:mailgun
 mrt:moment
-sergeyt:typeahead
 ajduke:bootstrap-tagsinput
-
+mizzao:autocomplete
