@@ -34,7 +34,7 @@ Template.post.helpers({
   },
   settings: function () {
     return {
-      position: "top",
+      position: "bottom",
       limit: 5,
       rules : [
         {
