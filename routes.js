@@ -60,6 +60,20 @@ Router.map(function() {
     }
   });
 
+  this.route('tagShow', {
+    path: '/r/:name',
+    waitOn: function() {
+      return this.subscribe('tag', this.params.name);
+    },
+    data: function() {
+      return {
+        tag: Tags.findOne({name: this.params.name}),
+        posts: Posts.find({}, {
+            sort: {hot: -1, createdAt: -1, score: -1}})
+      }
+    }
+  });
+
   this.route('dashboard', {
     path: '/dashboard',
     loginRequired: 'entrySignIn',

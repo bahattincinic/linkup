@@ -7,6 +7,7 @@ Template.post.events({
     var title = $.trim(form.find('textarea[name=title]').value);
     var url = $.trim(form.find('input[name=url]').value);
     var channels = $.trim(form.find('input[name=tags]').value);
+    // XXX: splice channels, get tags individually
     // title and url are mandatory
     if (title && url) {
       Posts.insert({
@@ -14,8 +15,10 @@ Template.post.events({
         url: url,
         channels: channels
       }, function (err, postId) {
-        if (err)
+        if (err) {
           throw err;
+          return;
+        }
 
         // result is post _id
         Meteor.call('upvote', postId, Meteor.userId());

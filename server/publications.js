@@ -56,3 +56,18 @@ Meteor.publishComposite("post", function(postId) {
     ]
   }
 });
+
+Meteor.publishComposite('tag', function(name) {
+  return {
+    find: function() {
+      return Tags.find({name: name})
+    },
+    children : [
+      {
+        find: function (tag) {
+          return Posts.find({tagId: tag._id})
+        }
+      }
+    ]
+  }
+});
