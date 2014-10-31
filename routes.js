@@ -65,6 +65,15 @@ Router.map(function() {
     waitOn: function() {
       return this.subscribe('tag', this.params.name);
     },
+    action: function() {
+      console.warn(this.params.name);
+      console.log(Tags.find().fetch().map(function(tag) { return tag.name;}));
+      if (this.ready()) {
+        this.render('tagShow', this.params.name);
+      } else {
+        this.render('loading');
+      }
+    },
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
