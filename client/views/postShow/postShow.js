@@ -3,10 +3,9 @@ Template.postShow.rendered = function () {
 };
 
 Template.postShow.events({
-  'submit #insertMessage': function (e, form) {
-    e.preventDefault();
-    var postId = $.trim(form.find('input[name=postId]').value);
-    var body = $.trim(form.find('textarea[name=body]').value);
+  'click #insertMessage, submit #messageForm': function () {
+    var postId = $.trim($('input[name=postId]').val());
+    var body = $.trim($('input[name=body]').val());
 
     if (postId && body) {
       var post = Posts.findOne({_id: postId});
@@ -18,10 +17,13 @@ Template.postShow.events({
           if (err)
             throw err;
         });
+        $('input[name=body]').val('');
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
       } else {
         throw new Meteor.Error('Invalid post id');
       }
     }
+    return false;
   }
 });
 

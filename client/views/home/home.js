@@ -1,7 +1,10 @@
-Template.home.events({
+Template.header.events({
   'click #create_topic': function () {
     Router.go('post');
   },
+});
+
+Template.home.events({
   'click #create_tag': function () {
     Router.go('tag');
   },

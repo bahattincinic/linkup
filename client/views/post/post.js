@@ -13,7 +13,8 @@ Template.post.events({
       Posts.insert({
         title: title,
         url: url,
-        channels: channels
+        channels: channels,
+        authorId: Meteor.userId()
       }, function (err, postId) {
         if (err) {
           throw err;

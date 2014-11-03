@@ -1,0 +1,77 @@
+.navbar-fixed-top {
+    left: 0px !important;
+}
+
+
+.logo img {
+    width: 55% !important;
+}
+
+@media (max-width: 480px) {
+    .logo {
+        display: none !important;
+    }
+
+    .login-menu li {
+      float: left;
+    }
+
+    div.login #content {
+      margin-top: 30px;
+    }
+}
+
+
+
+
+
+#content .container {
+    margin-top: 25px
+}
+
+
+.login-menu {
+  margin-top: 12px
+}
+
+.login-menu li:first-child {
+  margin-right: 5px;
+}
+
+.concept-background {
+  border-color: #c8244a !important;
+  background-color: #c8244a !important;
+}
+
+.concept-color {
+  color: #c8244a !important;
+}
+
+.concept-btn {
+  display: inline-block !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+  font-size: 14px !important;
+  line-height: 1.42857143 !important;
+  color:#fff !important;
+}
+
+.navbar-nav li.alert a:hover {
+  color: #efefef !important;
+}
+
+.voteButtonStyle {
+  margin-top: 0px !important;
+  margin-bottom: 3px !important;
+}
+
+.voteButton {
+  -webkit-border-radius: 79px !important;
+  -moz-border-radius: 79px !important;
+  border-radius: 79px !important;
+}
+
+
+ul.timeline-list li.media {
+  margin-top:  0px !important;
+}

@@ -1,25 +1,39 @@
 <template name='post'>
-  <div class="post">
-    <div class="page-header">
-      <h1>Create new topic</h1>
-    </div>
+  <div class="page-header">
+        <h1>Create new topic</h1>
+  </div>
 
-    <form role='form' id='topic'>
-      <div class="form-group">
-        <label for='post_title'>Post Title</label>
-        <textarea name='title' class='form-control' id='post_title' required></textarea>
+  <div class="panel panel-default">
+      <div class="panel-body">
+          <form class="form-horizontal" role="form" id='topic'>
+              <div class="form-group">
+                  <label class="col-sm-1 control-label" for="post_title">Post Title</label>
+                  <div class="col-sm-11">
+                      <textarea class="form-control" id='post_title' name="title" required rows="5"></textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="post_url" class="col-sm-1 control-label">Post Url</label>
+                  <div class="col-sm-11">
+                          <input type="text" class="form-control" name='url' id='post_url'>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="tag_select" class="col-sm-1 control-label">Tags</label>
+                  <div class="col-sm-11">
+                          {{> inputAutocomplete settings=settings type="text" spellcheck="off"
+                id="tag_select" name="tags" class="form-control" }}
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-sm-offset-1 col-sm-11">
+                      <button type="submit" class="btn btn-primary concept-background">Save</button>
+                  </div>
+              </div>
+
+          </form>
       </div>
-      <div class="form-group">
-        <label for='post_url'>Post Url</label>
-        <input type='url' class='form-control' name='url' id='post_url'/>
-      </div>
-      <div class="form-group">
-        <label for='tag_select'>Tags</label>
-        {{> inputAutocomplete settings=settings type="text" spellcheck="off"
-            id="tag_select" name="tags" class="form-control" }}
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
   </div>
 </template>
 

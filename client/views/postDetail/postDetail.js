@@ -21,6 +21,15 @@ Template.postDetail.helpers({
       else if (vote.vote == -1)
         return false;
     }
+    return false;
+  },
+  getAuthorFullname: function(){
+     var authorId = this.authorId;
+     var user = Meteor.users.findOne(authorId);
+     if(user){
+       return user.profile.name;
+     }
+     return 'Anonymous';
   }
 });
 
@@ -31,11 +40,15 @@ Template.postDetail.events({
   'click .upvote': function () {
     if (Meteor.user()) {
       Meteor.call('upvote', this._id, Meteor.userId());
+    }else {
+      Router.go('entrySignIn');
     }
   },
   'click .downvote': function () {
     if (Meteor.user()) {
       Meteor.call('downvote', this._id, Meteor.userId());
+    }else {
+      Router.go('entrySignIn');
     }
   }
 });

@@ -1,33 +1,67 @@
 <template name="postDetail">
-<li class="list-group-item">
-  <div class='row'>
-    <div class='col-sm-2'>
 
-      {{#if currentUser }}
-        {{#if hasVoted }}
-          {{#if checkVote }}
-            <a href="#" class='downvote'> V </a>
+<li class="media">
+  <div class="pull-left">
+      <div class="date voteButtonStyle voteButton">
+          {{#if hasVoted }}
+              {{#if checkVote }}
+                <a href="#" style="color: #000">
+                  <i class="fa fa-fw fa-2x fa-angle-up"></i>
+                </a>
+              {{else}}
+                <a href="#" style="color: #c8244a" class='upvote'>
+                  <i class="fa fa-fw fa-2x fa-angle-up"></i>
+                </a>
+              {{/if}}
           {{else}}
-            <a href="#" class='upvote'> A </a>
+            <a href="#" style="color: #c8244a" class='upvote'>
+              <i class="fa fa-fw fa-2x fa-angle-up"></i>
+            </a>
           {{/if}}
-        {{else}}
-          <a href="#" class='upvote'> A </a>
-          <a href="#" class='downvote'> V </a>
-        {{/if}}
-      {{/if}}
-
-      <span>{{score}}</span>
-    </div>
-
-    <div class='col-sm-8'>
-      <a class='post-detail' href='#'>{{title}}</a>
-    </div>
+      </div>
+      <div class="clear"></div>
+      <div class="date voteButtonStyle">
+          {{score}}
+      </div>
+      <div class="clear"></div>
+      <div class="date voteButtonStyle voteButton">
+          {{#if hasVoted }}
+            {{#if checkVote }}
+              <a href="#" style="color: #c8244a" class='downvote'>
+                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+              </a>
+            {{else}}
+              <a href="#" style="color: #000">
+                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+              </a>
+            {{/if}}
+          {{else}}
+            <a href="#" style="color: #c8244a" class='downvote'>
+                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+            </a>
+          {{/if}}
+      </div>
   </div>
-  <div class='row'>
-    <div class='col-sm-10'></div>
-    <div class='col-sm-2'>
-      <span>{{age}}</span>
-    </div>
+  <div class="media-body">
+      <div class="panel panel-default">
+      <div class="panel-body">
+          <p>
+            <a class='post-detail' href='#' style="color: #000; text-decoration:none">
+              {{title}}
+            </a>
+          </p>
+          <div class="clear"></div>
+          <div style="float:right">
+            <a href="{{url}}" target="_blank" style="color: #696969;">{{ url }}</a>
+          </div>
+      </div>
+      <div class="view-all-comments">
+          <div style="float:right">
+              <i class="fa fa-user fa-fw"></i> {{ getAuthorFullname }}
+              <i class="fa fa-clock-o fa-fw"></i> <span>{{ age }}</span>
+          </div>
+      </div>
+  </div>
   </div>
 </li>
 </template>

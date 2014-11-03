@@ -1,36 +1,21 @@
 <template name="home">
-  <div class="home">
-    <div class="page-header">
-      <h1>Welcome to {{ siteTitle }}</h1>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-10">
-        <ul class="list-group">
-          {{#each posts }}
+  <ul class="timeline-list">
+      <li></li>
+      {{#each posts }}
             {{> postDetail }}
-          {{/each}}
-        </ul>
+      {{/each}}
+  </ul>
 
-        <div class="row">
-          <nav>
-            <ul class="pager">
-              <li class="previous"><a href="#">&larr; Older</a></li>
-              <li class="next"><a href="#">Newer &rarr;</a></li>
-            </ul>
-          </nav>
-        </div>
-
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-default" id='create_topic'>Create New Topic</button>
-        <br><br>
-
-        <button class='btn btn-default' id='create_tag'>Create New Tag</button>
-      </div>
-    </div>
-
-
-
+  <div class="row">
+    <nav>
+      <ul class="pager">
+        <li class="previous">
+          <a href="#" class="concept-color">&larr; Older</a>
+        </li>
+        <li class="next">
+          <a href="#" class="concept-color">Newer &rarr;</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
