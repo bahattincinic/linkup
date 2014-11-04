@@ -97,6 +97,7 @@ Router.map(function() {
   });
 
   this.route('tagShow', {
+    requirements: [{collection: Tags}],
     path: '/r/:name',
     controller: PaginatedController,
     waitOn: function() {

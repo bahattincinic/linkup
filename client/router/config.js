@@ -18,5 +18,8 @@ Router.configure({
   }
 });
 
-console.log('options: ' + Router.options);
+// console.log('options: ');
+// console.log(Router.options);
+// console.log(Router.options.osman);
+
 Router.onBeforeAction('loading');

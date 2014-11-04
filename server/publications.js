@@ -65,7 +65,6 @@ Meteor.publishComposite("post", function(postId) {
 });
 
 Meteor.publishComposite('tag', function(name, page) {
-  console.log("name: " + name + " page: " + page);
   var batch = 20;
   var page = page || 0;
 
