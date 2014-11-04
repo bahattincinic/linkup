@@ -14,7 +14,6 @@ Router.map(function() {
   this.route('home', {
     path: '/page/:page',
     waitOn: function() {
-      console.log('paged: ' + Number(this.params.page));
       return this.subscribe("posts", Number(this.params.page));
     },
     action: function () {
@@ -53,13 +52,9 @@ Router.map(function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
       // should sort by score/popularity
-      console.log('processed tags, publish data');
       return  {
         tags: Tags.find({})
       }
-    },
-    onAfterAction: function () {
-      console.log('onAfterAction');
     }
   });
 

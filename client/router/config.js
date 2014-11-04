@@ -2,6 +2,7 @@ Router.configure({
   layoutTemplate: 'mainLayout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound',
+  osman: 10,
 
   yieldTemplates: {
     header: {
@@ -17,4 +18,5 @@ Router.configure({
   }
 });
 
+console.log('options: ' + Router.options);
 Router.onBeforeAction('loading');

@@ -1,9 +1,6 @@
 
 PaginatedController = RouteController.extend({
-  osman: 12,
   action: function () {
-    console.log(this);
-
     // we expect exactly one tag here
     if (Tags.find().count() !== 1) {
       // no tag found
