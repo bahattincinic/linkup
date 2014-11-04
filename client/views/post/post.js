@@ -24,6 +24,7 @@ Template.post.events({
         // result is post _id
         Meteor.call('upvote', postId, Meteor.userId());
         $('#newTopicModal').modal('hide');
+        $('#topic')[0].reset();
         Router.go('postShow', {_id: postId});
       });
     } else {
