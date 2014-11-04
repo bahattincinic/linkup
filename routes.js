@@ -12,7 +12,7 @@ Router.map(function() {
   });
 
   this.route('home', {
-    path: '/:page',
+    path: '/page/:page',
     waitOn: function() {
       console.log('paged: ' + Number(this.params.page));
       return this.subscribe("posts", Number(this.params.page));
