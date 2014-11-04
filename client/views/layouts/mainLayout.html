@@ -11,5 +11,9 @@
     </div>
   </div>
 
+  {{#if currentUser}}
+    {{> post }}
+  {{/if}}
+
   {{> yield region="footer"}}
 </template>

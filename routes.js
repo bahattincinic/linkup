@@ -4,7 +4,10 @@ Router.map(function() {
     path: '/',
     waitOn: function() {
       page = 0;
-      return this.subscribe("posts");
+      return [
+        this.subscribe("posts"),
+        this.subscribe("tags")
+      ];
     },
     data: {
       posts: Posts.find({})
@@ -15,7 +18,10 @@ Router.map(function() {
     path: '/page/:page',
     waitOn: function() {
       console.log('paged: ' + Number(this.params.page));
-      return this.subscribe("posts", Number(this.params.page));
+      return [
+          this.subscribe("posts", Number(this.params.page)),
+          this.subscribe("tags")
+      ];
     },
     action: function () {
       var current = this.params.page;
@@ -33,7 +39,8 @@ Router.map(function() {
       }
     },
     data: {
-      posts: Posts.find({})
+      posts: Posts.find({}),
+      tags: Tags.find({})
     }
   });
 

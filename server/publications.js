@@ -59,6 +59,11 @@ Meteor.publishComposite("post", function(postId) {
         find: function (post) {
           return Messages.find({postId: post._id})
         }
+      },
+      {
+        find: function (post) {
+          return Votes.find({postId: post._id});
+        }
       }
     ]
   }

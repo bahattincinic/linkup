@@ -1,6 +1,6 @@
 Template.header.events({
   'click #create_topic': function () {
-    Router.go('post');
+    $('#newTopicModal').modal('show');
   },
 });
 

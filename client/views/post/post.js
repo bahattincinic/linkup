@@ -23,7 +23,8 @@ Template.post.events({
 
         // result is post _id
         Meteor.call('upvote', postId, Meteor.userId());
-        Router.go('/');
+        $('#newTopicModal').modal('hide');
+        Router.go('postShow', {_id: postId});
       });
     } else {
       throw new Meteor.Error('XXX: missing data');

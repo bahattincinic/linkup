@@ -1,39 +1,42 @@
 <template name='post'>
-  <div class="page-header">
-        <h1>Create new topic</h1>
-  </div>
+  <div class="modal fade" id="newTopicModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
 
-  <div class="panel panel-default">
-      <div class="panel-body">
-          <form class="form-horizontal" role="form" id='topic'>
-              <div class="form-group">
-                  <label class="col-sm-1 control-label" for="post_title">Post Title</label>
-                  <div class="col-sm-11">
-                      <textarea class="form-control" id='post_title' name="title" required rows="5"></textarea>
+    <div class="modal-content">
+      <form class="form-horizontal" role="form" id='topic'>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create new topic</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+                      <label class="col-sm-3 control-label" for="post_title">Post Title</label>
+                      <div class="col-sm-9">
+                          <textarea class="form-control" id='post_title' name="title" required rows="5"></textarea>
+                      </div>
                   </div>
-              </div>
-              <div class="form-group">
-                  <label for="post_url" class="col-sm-1 control-label">Post Url</label>
-                  <div class="col-sm-11">
-                          <input type="text" class="form-control" name='url' id='post_url'>
+                  <div class="form-group">
+                      <label for="post_url" class="col-sm-3 control-label">Post Url</label>
+                      <div class="col-sm-9">
+                              <input type="text" class="form-control" name='url' id='post_url'>
+                      </div>
                   </div>
-              </div>
-              <div class="form-group">
-                  <label for="tag_select" class="col-sm-1 control-label">Tags</label>
-                  <div class="col-sm-11">
-                          {{> inputAutocomplete settings=settings type="text" spellcheck="off"
-                id="tag_select" name="tags" class="form-control" }}
+                  <div class="form-group">
+                      <label for="tag_select" class="col-sm-3 control-label">Tags</label>
+                      <div class="col-sm-9">
+                              {{> inputAutocomplete settings=settings type="text" spellcheck="off"
+                    id="tag_select" name="tags" class="form-control" }}
+                      </div>
                   </div>
-              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary concept-background">Save</button>
+          </div>
+      </form>
+    </div>
 
-              <div class="form-group">
-                  <div class="col-sm-offset-1 col-sm-11">
-                      <button type="submit" class="btn btn-primary concept-background">Save</button>
-                  </div>
-              </div>
-
-          </form>
-      </div>
+    </div>
   </div>
 </template>
 
