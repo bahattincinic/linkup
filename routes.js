@@ -3,7 +3,7 @@ Router.map(function() {
   this.route('home', {
     path: '/',
     waitOn: function() {
-      console.log('bare');
+      page = 0;
       return this.subscribe("posts");
     },
     data: {
@@ -16,6 +16,21 @@ Router.map(function() {
     waitOn: function() {
       console.log('paged: ' + Number(this.params.page));
       return this.subscribe("posts", Number(this.params.page));
+    },
+    action: function () {
+      var current = this.params.page;
+      // check page
+      if ((current % 1) !== 0 || Posts.find().count() == 0) {
+        // invalid page
+        this.render('notFound');
+      } else {
+        page = Number(current);
+        if (!this.ready()) {
+          this.render('loading');
+        } else {
+          this.render();
+        }
+      }
     },
     data: {
       posts: Posts.find({})
@@ -65,6 +80,19 @@ Router.map(function() {
     waitOn: function() {
       return this.subscribe("post", this.params._id);
     },
+    action: function () {
+      // we expect exactly one post here
+      if (Posts.find().count() !== 1) {
+        // no post here
+        this.render('notFound');
+      } else {
+        if (!this.ready()) {
+          this.render('loading');
+        } else {
+          this.render();
+        }
+      }
+    },
     data: function () {
       return {
         post: Posts.findOne({_id: this.params._id}),
@@ -77,6 +105,21 @@ Router.map(function() {
     path: '/r/:name',
     waitOn: function() {
       return this.subscribe('tag', this.params.name);
+    },
+    action: function () {
+      // we expect exactly one tag here
+      if (Tags.find().count() !== 1) {
+        // no tag found
+        this.render('notFound');
+        this.render('header', {to: 'header'});
+        this.render('footer', {to: 'footer'});
+      } else {
+        if (!this.ready()) {
+          this.render('loading');
+        } else {
+          this.render();
+        }
+      }
     },
     data: function() {
       return {
