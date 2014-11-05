@@ -97,7 +97,7 @@ Router.map(function() {
   });
 
   this.route('tagShow', {
-    requirements: [{collection: Tags}],
+    requirements: [{collection: Tags, params: ['name']}],
     path: '/r/:name',
     controller: PaginatedController,
     waitOn: function() {
@@ -113,7 +113,9 @@ Router.map(function() {
   });
 
   this.route('tagShow', {
+    requirements: [{collection: Tags, params: ['name']}],
     path: '/r/:name/:page',
+    controller: PaginatedController,
     waitOn: function() {
       return this.subscribe('tag', this.params.name, this.params.page);
     },

@@ -6,19 +6,25 @@ PaginatedController = RouteController.extend({
     var requirements = current.route.options.requirements;
     var passes = true;
     // confirm that all of the requirements passes OK
-    debugger;
+    //debugger;
     requirements.forEach(function validateReqs(req) {
       if (!passes) return;
 
-      var keys = current.route.keys;
+      var keys = current.route.keys.map(function(key){return key.name});
       keys.forEach(function validateKeys(key) {
-        var attr = key.name;
-        var param = current.params[attr];
-        console.log("key: " + attr + " param: " + param);
-        var doc = req.collection.find({attr: param}).fetch();
-        debugger;
-        console.log(doc);
-        if (!doc) {
+        if (req.params.indexOf(key) == -1) {
+          return;
+        }
+
+        var selector = {};
+        var param = current.params[key];
+        selector[key] = param;
+        console.log(selector);
+        var hasDoc = !!req.collection.find(selector).count();
+
+        //debugger;
+
+        if (!hasDoc) {
           // did not pass
           passes = false;
           console.log('no go');
@@ -28,9 +34,10 @@ PaginatedController = RouteController.extend({
       });
     });
 
-    debugger;
+    console.log(passes);
+    //debugger;
 
-    if (Tags.find().count() !== 1) {
+    if (!passes) {
       // no tag found
       this.render('notFound');
       this.render('header', {to: 'header'});
