@@ -17,7 +17,6 @@ Router.map(function() {
   this.route('home', {
     path: '/page/:page',
     waitOn: function() {
-      console.log('paged: ' + Number(this.params.page));
       return [
           this.subscribe("posts", Number(this.params.page)),
           this.subscribe("tags")
@@ -60,13 +59,9 @@ Router.map(function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
       // should sort by score/popularity
-      console.log('processed tags, publish data');
       return  {
         tags: Tags.find({})
       }
-    },
-    onAfterAction: function () {
-      console.log('onAfterAction');
     }
   });
 
@@ -109,6 +104,7 @@ Router.map(function() {
   });
 
   this.route('tagShow', {
+    require: [{collection: Tags}],
     path: '/r/:name',
     controller: PaginatedController,
     waitOn: function() {
@@ -124,7 +120,9 @@ Router.map(function() {
   });
 
   this.route('tagShow', {
+    require: [{collection: Tags}, {collection: Posts}],
     path: '/r/:name/:page',
+    controller: PaginatedController,
     waitOn: function() {
       return this.subscribe('tag', this.params.name, this.params.page);
     },

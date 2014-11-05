@@ -1,11 +1,23 @@
 
 PaginatedController = RouteController.extend({
-  osman: 12,
   action: function () {
-    console.log(this);
+    // get requirements for this route
+    var current = Router.current();
+    var requirements = current.route.options.require;
+    var passes = true;
 
-    // we expect exactly one tag here
-    if (Tags.find().count() !== 1) {
+    requirements.forEach(function validateReqs(req) {
+      if (!passes) return;
+
+      if (req.collection) {
+        var hasDoc = !!req.collection.find().count();
+
+        if (!hasDoc)
+          passes = false;
+      }
+    });
+
+    if (!passes) {
       // no tag found
       this.render('notFound');
       this.render('header', {to: 'header'});
