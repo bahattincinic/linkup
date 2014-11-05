@@ -3,10 +3,9 @@ PaginatedController = RouteController.extend({
   action: function () {
     // get requirements for this route
     var current = Router.current();
-    var requirements = current.route.options.requirements;
+    var requirements = current.route.options.require;
     var passes = true;
 
-    //debugger;
     requirements.forEach(function validateReqs(req) {
       if (!passes) return;
 
@@ -17,9 +16,6 @@ PaginatedController = RouteController.extend({
           passes = false;
       }
     });
-
-    console.log(passes);
-    //debugger;
 
     if (!passes) {
       // no tag found
