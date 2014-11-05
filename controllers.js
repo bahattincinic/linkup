@@ -5,33 +5,17 @@ PaginatedController = RouteController.extend({
     var current = Router.current();
     var requirements = current.route.options.requirements;
     var passes = true;
-    // confirm that all of the requirements passes OK
+
     //debugger;
     requirements.forEach(function validateReqs(req) {
       if (!passes) return;
 
-      var keys = current.route.keys.map(function(key){return key.name});
-      keys.forEach(function validateKeys(key) {
-        if (req.params.indexOf(key) == -1) {
-          return;
-        }
+      if (req.collection) {
+        var hasDoc = !!req.collection.find().count();
 
-        var selector = {};
-        var param = current.params[key];
-        selector[key] = param;
-        console.log(selector);
-        var hasDoc = !!req.collection.find(selector).count();
-
-        //debugger;
-
-        if (!hasDoc) {
-          // did not pass
+        if (!hasDoc)
           passes = false;
-          console.log('no go');
-        } else {
-          console.log('pass ok');
-        }
-      });
+      }
     });
 
     console.log(passes);
