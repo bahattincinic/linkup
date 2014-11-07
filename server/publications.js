@@ -20,15 +20,15 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
   var tagName = tagName || null;
   var filter = {};
 
-  // use all filter options
-  filterOptions.forEach(function (option) {
-    if (option && option.collection && option.filter && option.key) {
-      var item = option.collection.findOne(option.filter);
-      if (item) {
-        filter[option.key] = item._id;
+  // we expect an arra
+  if (filterOptions instanceof Array && filterOptions) {
+    filterOptions.forEach(function (option) {
+      var doc = eval(option.collection).findOne(option.filter);
+      if (doc && option.key) {
+        filter[option.key] = doc._id;
       }
-    }
-  });
+    });
+  }
 
   console.log(filter);
 

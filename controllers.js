@@ -7,24 +7,28 @@ FilteringController = RouteController.extend({
     return this.params.username || null;
   },
   getFilteringOptions: function () {
-    var filtering = {};
+    var filtering = [];
     var username = this.getUserName();
     var tagname = this.getTagName();
 
     if (username) {
-        filtering['username'] = {
-        collection: Meteor.users,
+      userFilter = {
+        collection: 'Meteor.users',
         filter: {username: username},
         key: 'authorId'
-      };
+      }
+
+      filtering.push(userFilter);
     }
 
     if (tagname) {
-      filtering['tagname'] = {
-        collection: Tags,
+      tagFilter = {
+        collection: 'Tags',
         filter: {name: tagname},
         key: 'tagId'
-      };
+      }
+
+      filtering.push(tagFilter);
     }
 
     return filtering;

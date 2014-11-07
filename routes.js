@@ -8,7 +8,6 @@ Router.map(function() {
     }
   });
 
-
   this.route('userHistory', {
     controller: NewController,
     childRoute: 'userHistoryPaged',
