@@ -28,7 +28,7 @@ RequiredController = RouteController.extend({
       // extract keys starting with ':' from path
       var keys = [];
       if (path === '/') {
-        return keys
+        return keys;
       }
 
       var ll = path.split('/').splice(1);

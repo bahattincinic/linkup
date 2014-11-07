@@ -1,7 +1,7 @@
 /* hot_interval worker
   -> connect to message broker
   -> connect to redis
-  -> subscrive when redis ready
+  -> subscribe when redis ready
   -> connect to mongo when a message is received
 */
 var mq = require('amqp').createConnection({host: 'localhost'});
