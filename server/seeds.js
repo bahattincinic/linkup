@@ -32,6 +32,10 @@ Meteor.startup(function() {
         // update default score
         Posts.update(post_id, {$set: {score: ii}});
 
+        // change createdAt
+        var ranDate = moment().subtract(getRandomInt(1, 5), 'days').utc().toDate();
+        Posts.update(post_id, {$set: {createdAt: ranDate}});
+
         // upvote post to trigger hotness calculation
         Meteor.call('upvote', post_id, user_id);
 

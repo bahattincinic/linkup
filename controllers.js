@@ -32,15 +32,36 @@ PaginatedController = RouteController.extend({
   }
 });
 
-SortedController = RouteController.extend({
-  limit: 20,
-  page: 0,
+var SortedController = RouteController.extend({
   sort: {createdAt: -1},
+  hasPages: function () {return true;},
   getSortOptions: function () {
     return this.sort;
   },
   getPage: function() {
-    return this.params.page || this.page;
+    return this.params.page || 0;
+  },
+  process: function (page) {
+    if (page > 0) {
+      // pick childRoute option if provided, otherwise use current router
+      var paged = this.route.options.childRoute || this.route.getName();
+    } else if (page == 0) {
+      // likewise pick parent route if provided, use self otherwise..
+      var paged = this.route.options.parentRoute || this.route.getName();
+    } else {
+      // negative page, do nothing..
+      // throw new Meteor.Error(404, ' No Such page ');
+    }
+
+    Router.go(paged, {page: page});
+  },
+  nextPage: function () {
+    page = Number(this.getPage());
+    this.process(++page);
+  },
+  previousPage: function () {
+    page = Number(this.getPage());
+    this.process(--page);
   }
 });
 
@@ -56,8 +77,8 @@ HotController = SortedController.extend({
 });
 
 
-BestController = SortedController.extend({
-  sort: {score: -1, createdAt: -1},
-  waitOn: function () {
-  }
-});
+// BestController = SortedController.extend({
+//   sort: {score: -1, createdAt: -1},
+//   waitOn: function () {
+//   }
+// });

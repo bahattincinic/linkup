@@ -8,17 +8,20 @@ Template.home.events({
   'click #create_tag': function () {
     Router.go('tag');
   },
-  'click .previous': function () {
-    page -= 1;
-    if (page <= 0) {
-      page = 0;
-      Router.go('/');
-    } else {
-      Router.go('home', {page: page});
+  'click .previous': function (e, f) {
+    e.preventDefault();
+
+    var controller = Router.current();
+    if (controller && controller.hasPages && controller.hasPages()) {
+      controller.previousPage();
     }
   },
-  'click .next': function () {
-    page += 1;
-    Router.go('home', {page: page});
+  'click .next': function (e, f) {
+    e.preventDefault();
+
+    var controller = Router.current();
+    if (controller && controller.hasPages && controller.hasPages()) {
+      controller.nextPage();
+    }
   }
 });

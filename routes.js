@@ -2,6 +2,7 @@
 Router.map(function() {
   this.route('home', {
     controller: HotController,
+    childRoute: 'homePages',
     path: '/',
     data: {
       posts: Posts.find({})
@@ -16,9 +17,11 @@ Router.map(function() {
   //   }
   // });
 
-  this.route('home', {
+  this.route('homePages', {
     path: '/page/:page',
     controller: HotController,
+    template: 'home',
+    parentRoute: 'home',
     requires: [{collection: Posts}],
     data: {
       posts: Posts.find({}),
@@ -102,10 +105,11 @@ Router.map(function() {
     }
   });
 
-  this.route('tagShow', {
+  this.route('tagShowPaged', {
     require: [{collection: Tags}, {collection: Posts}],
     path: '/r/:name/:page',
     controller: PaginatedController,
+    template: 'tagShow',
     waitOn: function() {
       return this.subscribe('tag', this.params.name, this.params.page);
     },
