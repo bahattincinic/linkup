@@ -36,7 +36,6 @@ RequiredController = RouteController.extend({
         l.charAt(0) === ':' &&  keys.push(l.slice(1));
       });
 
-      console.warn(keys);
       return keys;
     };
 

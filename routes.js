@@ -11,7 +11,21 @@ Router.map(function() {
 
   this.route('homeNew', {
     path: '/new',
+    template: 'home',
     controller: NewController,
+    childRoute: 'newPages',
+    requires: [{collection: Posts}],
+    data: {
+      posts: Posts.find({})
+    }
+  });
+
+  this.route('newPages', {
+    path: '/new/:page',
+    template: 'home',
+    parentRoute: 'homeNew',
+    controller: NewController,
+    requires: [{collection: Posts}],
     data: {
       posts: Posts.find({})
     }
