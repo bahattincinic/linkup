@@ -92,7 +92,7 @@ Router.map(function() {
   this.route('tagShow', {
     require: [{collection: Tags}],
     path: '/r/:name',
-    controller: PaginatedController,
+    controller: RequiredController,
     waitOn: function() {
       return this.subscribe('tag', this.params.name);
     },
@@ -108,7 +108,7 @@ Router.map(function() {
   this.route('tagShowPaged', {
     require: [{collection: Tags}, {collection: Posts}],
     path: '/r/:name/:page',
-    controller: PaginatedController,
+    controller: PagedController,
     template: 'tagShow',
     waitOn: function() {
       return this.subscribe('tag', this.params.name, this.params.page);

@@ -1,10 +1,10 @@
 
-PaginatedController = RouteController.extend({
+RequiredController = RouteController.extend({
   action: function () {
     // get requirements for this route
     var current = Router.current();
-    var requirements = current.route.options.require;
     var passes = true;
+    var requirements = current.route.options.requires || [];
 
     requirements.forEach(function validateReqs(req) {
       if (!passes) return;
@@ -18,7 +18,6 @@ PaginatedController = RouteController.extend({
     });
 
     if (!passes) {
-      // no tag found
       this.render('notFound');
       this.render('header', {to: 'header'});
       this.render('footer', {to: 'footer'});
@@ -32,7 +31,7 @@ PaginatedController = RouteController.extend({
   }
 });
 
-var SortedController = RouteController.extend({
+PagedController = RequiredController.extend({
   sort: {createdAt: -1},
   hasPages: function () {return true;},
   getSortOptions: function () {
@@ -49,6 +48,7 @@ var SortedController = RouteController.extend({
       // likewise pick parent route if provided, use self otherwise..
       var paged = this.route.options.parentRoute || this.route.getName();
     } else {
+      return;
       // negative page, do nothing..
       // throw new Meteor.Error(404, ' No Such page ');
     }
@@ -65,7 +65,7 @@ var SortedController = RouteController.extend({
   }
 });
 
-HotController = SortedController.extend({
+HotController = PagedController.extend({
   sort: {hot: -1, createdAt: -1, score: -1},
   waitOn: function() {
     console.log(Number(this.getPage()), this.getSortOptions());
@@ -76,8 +76,7 @@ HotController = SortedController.extend({
   }
 });
 
-
-// BestController = SortedController.extend({
+// BestController = PagedController.extend({
 //   sort: {score: -1, createdAt: -1},
 //   waitOn: function () {
 //   }
