@@ -11,7 +11,7 @@ Meteor.publishComposite("tags", function() {
 });
 
 // home
-Meteor.publishComposite("posts", function(page, sort, tagName) {
+Meteor.publishComposite("posts", function(page, sort, filterOptions) {
   console.log('sub to posts');
   console.log(page);
   console.dir(sort);
@@ -19,12 +19,16 @@ Meteor.publishComposite("posts", function(page, sort, tagName) {
   var batch = 20;
   var tagName = tagName || null;
   var filter = {};
-  if (tagName) {
-    var tag = Tags.findOne({name: tagName});
-    if (tag) {
-      filter['tagId'] = tag._id;
+
+  // use all filter options
+  filterOptions.forEach(function (option) {
+    if (option && option.collection && option.filter && option.key) {
+      var item = option.collection.findOne(option.filter);
+      if (item) {
+        filter[option.key] = item._id;
+      }
     }
-  }
+  });
 
   console.log(filter);
 

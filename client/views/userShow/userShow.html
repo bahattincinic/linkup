@@ -1,0 +1,11 @@
+<template name="userShow">
+  <div class="userShow">
+    <ul class="timeline-list">
+    {{#each posts }}
+      {{> postMediaBody}}
+    {{/each}}
+    </ul>
+
+    {{> paginator}}
+  </div>
+</template>

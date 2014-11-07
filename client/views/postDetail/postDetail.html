@@ -1,49 +1,59 @@
 <template name="postDetail">
 
 <li class="media">
+  {{> postScore}}
+
+  {{> postMediaBody}}
+</li>
+</template>
+
+<template name="postScore">
   <div class="pull-left">
-      <div class="date voteButtonStyle voteButton">
-          {{#if hasVoted }}
-              {{#if checkVote }}
-                <a href="#" style="color: #000">
-                  <i class="fa fa-fw fa-2x fa-angle-up"></i>
-                </a>
-              {{else}}
-                <a href="#" style="color: #c8244a" class='upvote'>
-                  <i class="fa fa-fw fa-2x fa-angle-up"></i>
-                </a>
-              {{/if}}
-          {{else}}
-            <a href="#" style="color: #c8244a" class='upvote'>
-              <i class="fa fa-fw fa-2x fa-angle-up"></i>
-            </a>
-          {{/if}}
-      </div>
-      <div class="clear"></div>
-      <div class="date voteButtonStyle">
-          {{score}}
-      </div>
-      <div class="clear"></div>
-      <div class="date voteButtonStyle voteButton">
-          {{#if hasVoted }}
+    <div class="date voteButtonStyle voteButton">
+        {{#if hasVoted }}
             {{#if checkVote }}
-              <a href="#" style="color: #c8244a" class='downvote'>
-                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+              <a href="#" style="color: #000">
+                <i class="fa fa-fw fa-2x fa-angle-up"></i>
               </a>
             {{else}}
-              <a href="#" style="color: #000">
-                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+              <a href="#" style="color: #c8244a" class='upvote'>
+                <i class="fa fa-fw fa-2x fa-angle-up"></i>
               </a>
             {{/if}}
-          {{else}}
+        {{else}}
+          <a href="#" style="color: #c8244a" class='upvote'>
+            <i class="fa fa-fw fa-2x fa-angle-up"></i>
+          </a>
+        {{/if}}
+    </div>
+    <div class="clear"></div>
+    <div class="date voteButtonStyle">
+        {{score}}
+    </div>
+    <div class="clear"></div>
+    <div class="date voteButtonStyle voteButton">
+        {{#if hasVoted }}
+          {{#if checkVote }}
             <a href="#" style="color: #c8244a" class='downvote'>
-                <i class="fa fa-fw fa-2x fa-angle-down"></i>
+              <i class="fa fa-fw fa-2x fa-angle-down"></i>
+            </a>
+          {{else}}
+            <a href="#" style="color: #000">
+              <i class="fa fa-fw fa-2x fa-angle-down"></i>
             </a>
           {{/if}}
-      </div>
+        {{else}}
+          <a href="#" style="color: #c8244a" class='downvote'>
+              <i class="fa fa-fw fa-2x fa-angle-down"></i>
+          </a>
+        {{/if}}
+    </div>
   </div>
+</template>
+
+<template name="postMediaBody">
   <div class="media-body">
-      <div class="panel panel-default">
+    <div class="panel panel-default">
       <div class="panel-body" style="width: 978px">
           <p>
             <a class='post-detail' href='#' style="color: #000; text-decoration:none">
@@ -62,7 +72,6 @@
               <i class="fa fa-clock-o fa-fw"></i> <span>{{ hot }}</span>
           </div>
       </div>
+    </div>
   </div>
-  </div>
-</li>
 </template>

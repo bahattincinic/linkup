@@ -1,9 +1,38 @@
 
-RequiredController = RouteController.extend({
-  routeParams: {},
+FilteringController = RouteController.extend({
   getTagName: function () {
     return this.params.name || null;
   },
+  getUserName: function () {
+    return this.params.username || null;
+  },
+  getFilteringOptions: function () {
+    var filtering = {};
+    var username = this.getUserName();
+    var tagname = this.getTagName();
+
+    if (username) {
+        filtering['username'] = {
+        collection: Meteor.users,
+        filter: {username: username},
+        key: 'authorId'
+      };
+    }
+
+    if (tagname) {
+      filtering['tagname'] = {
+        collection: Tags,
+        filter: {name: tagname},
+        key: 'tagId'
+      };
+    }
+
+    return filtering;
+  }
+});
+
+RequiredController = FilteringController.extend({
+  routeParams: {},
   requirementsCheck: function () {
     var current = Router.current();
     var passes = true;
@@ -57,6 +86,7 @@ RequiredController = RouteController.extend({
   },
   action: function () {
     if (!this.requirementsCheck()) {
+      // XXX: get notFoundTemplate from route first
       this.render('notFound');
       this.render('header', {to: 'header'});
       this.render('footer', {to: 'footer'});
@@ -104,21 +134,22 @@ PagedController = RequiredController.extend({
 HotController = PagedController.extend({
   sort: {hot: -1, createdAt: -1, score: -1},
   waitOn: function() {
-    console.log(Number(this.getPage()), this.getSortOptions(), this.getTagName());
+    console.log(Number(this.getPage()), this.getSortOptions(), this.getFilteringOptions());
     return this.subscribe("posts",
                           Number(this.getPage()),
                           this.getSortOptions(),
-                          this.getTagName())
+                          this.getFilteringOptions())
   }
 });
 
 NewController = PagedController.extend({
   sort: {createdAt: -1, score: -1},
   waitOn: function () {
-    console.log(Number(this.getPage(), this.getSortOptions(), this.getTagName()));
+    console.log(Number(this.getPage()), this.getSortOptions(), this.getFilteringOptions());
     return this.subscribe("posts",
                           Number(this.getPage()),
                           this.getSortOptions(),
-                          this.getTagName())
+                          this.getFilteringOptions())
   }
 });
+

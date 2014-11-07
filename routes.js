@@ -9,6 +9,29 @@ Router.map(function() {
     }
   });
 
+
+  this.route('userHistory', {
+    controller: NewController,
+    childRoute: 'userHistoryPaged',
+    requires: [{collection: Posts}],
+    template: 'userShow',
+    path: '/user/:username',
+    data: {
+      posts: Posts.find({})
+    }
+  });
+
+  this.route('userHistoryPaged', {
+    controller: NewController,
+    parentRoute: 'userHistory',
+    template: 'userShow',
+    path: '/user/:username/:page',
+    requires: [{collection: Posts}],
+    data: {
+      posts: Posts.find({})
+    }
+  });
+
   this.route('homeNew', {
     path: '/new',
     template: 'home',
