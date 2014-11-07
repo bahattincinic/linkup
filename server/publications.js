@@ -20,7 +20,7 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
   var tagName = tagName || null;
   var filter = {};
 
-  // we expect an arra
+  // we expect an array
   if (filterOptions instanceof Array && filterOptions) {
     filterOptions.forEach(function (option) {
       var doc = eval(option.collection).findOne(option.filter);
