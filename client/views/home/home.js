@@ -7,7 +7,11 @@ Template.header.events({
 Template.home.events({
   'click #create_tag': function () {
     Router.go('tag');
-  },
+  }
+});
+
+
+Template.paginator.events({
   'click .previous': function (e, f) {
     e.preventDefault();
 

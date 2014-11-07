@@ -1,5 +1,6 @@
 
 RequiredController = RouteController.extend({
+  routeParams: {},
   action: function () {
     // get requirements for this route
     var current = Router.current();
@@ -15,6 +16,13 @@ RequiredController = RouteController.extend({
         if (!hasDoc)
           passes = false;
       }
+
+      debugger;
+      // if (req.params) {
+      //   req.params.forEach(function (param) {
+      //     this.routeParams.extend({param: this.params[param]});
+      //   });
+      // }
     });
 
     if (!passes) {
@@ -32,7 +40,7 @@ RequiredController = RouteController.extend({
 });
 
 PagedController = RequiredController.extend({
-  sort: {createdAt: -1},
+  sort: {},
   hasPages: function () {return true;},
   getSortOptions: function () {
     return this.sort;
@@ -48,9 +56,9 @@ PagedController = RequiredController.extend({
       // likewise pick parent route if provided, use self otherwise..
       var paged = this.route.options.parentRoute || this.route.getName();
     } else {
-      return;
       // negative page, do nothing..
       // throw new Meteor.Error(404, ' No Such page ');
+      return;
     }
 
     Router.go(paged, {page: page});
@@ -67,14 +75,18 @@ PagedController = RequiredController.extend({
 
 HotController = PagedController.extend({
   sort: {hot: -1, createdAt: -1, score: -1},
+  getTagName: function () {
+    return this.params.name || null;
+  },
   waitOn: function() {
-    console.log(Number(this.getPage()), this.getSortOptions());
-    return [
-      this.subscribe("posts", Number(this.getPage()), this.getSortOptions()),
-      this.subscribe("tags")
-    ];
+    console.log(Number(this.getPage()), this.getSortOptions(), this.getTagName());
+    return this.subscribe("posts",
+                          Number(this.getPage()),
+                          this.getSortOptions(),
+                          this.getTagName())
   }
 });
+
 
 // BestController = PagedController.extend({
 //   sort: {score: -1, createdAt: -1},

@@ -2,6 +2,7 @@ Router.configure({
   layoutTemplate: 'mainLayout',
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound',
+  waitOn: function () { return Meteor.subscribe('tags');},
 
   yieldTemplates: {
     header: {

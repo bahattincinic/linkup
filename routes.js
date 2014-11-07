@@ -31,16 +31,6 @@ Router.map(function() {
 
   this.route('post', {
     path: '/post',
-    onBeforeAction: function() {
-      // XXX: in here if there are no
-      // Meteor.user() exists, then autocreate
-      // an anonymous user for the poster
-      // https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md#before-and-after-hooks
-    },
-    waitOn: function() {
-      // Post requires tags (aka subreddits)
-      return this.subscribe("tags");
-    },
     data: function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
@@ -53,9 +43,6 @@ Router.map(function() {
 
   this.route('tag', {
     path: '/tag',
-    waitOn: function() {
-      return this.subscribe('tags')
-    },
     data: function () {
       return {
         tags: Tags.find({})
@@ -92,27 +79,22 @@ Router.map(function() {
   this.route('tagShow', {
     require: [{collection: Tags}],
     path: '/r/:name',
-    controller: RequiredController,
-    waitOn: function() {
-      return this.subscribe('tag', this.params.name);
-    },
+    controller: HotController,
+    childRoute: 'tagShowPaged',
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
-        posts: Posts.find({}, {
-            sort: {hot: -1, createdAt: -1, score: -1}})
+        posts: Posts.find({})
       }
     }
   });
 
   this.route('tagShowPaged', {
-    require: [{collection: Tags}, {collection: Posts}],
+    require: [{collection: Tags}, {collection: Posts}, {params: ['name', 'page']}],
     path: '/r/:name/:page',
-    controller: PagedController,
+    controller: HotController,
     template: 'tagShow',
-    waitOn: function() {
-      return this.subscribe('tag', this.params.name, this.params.page);
-    },
+    parentRoute: 'tagShow',
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
