@@ -1,42 +1,25 @@
 
 Router.map(function() {
   this.route('home', {
+    controller: HotController,
     path: '/',
-    waitOn: function() {
-      page = 0;
-      return [
-        this.subscribe("posts"),
-        this.subscribe("tags")
-      ];
-    },
     data: {
       posts: Posts.find({})
     }
   });
 
+  // this.route('home', {
+  //   path: '/best',
+  //   controller: BestController,
+  //   data: {
+  //     posts: Posts.find({})
+  //   }
+  // });
+
   this.route('home', {
     path: '/page/:page',
-    waitOn: function() {
-      return [
-          this.subscribe("posts", Number(this.params.page)),
-          this.subscribe("tags")
-      ];
-    },
-    action: function () {
-      var current = this.params.page;
-      // check page
-      if ((current % 1) !== 0 || Posts.find().count() == 0) {
-        // invalid page
-        this.render('notFound');
-      } else {
-        page = Number(current);
-        if (!this.ready()) {
-          this.render('loading');
-        } else {
-          this.render();
-        }
-      }
-    },
+    controller: HotController,
+    requires: [{collection: Posts}],
     data: {
       posts: Posts.find({}),
       tags: Tags.find({})

@@ -1,18 +1,7 @@
-Meteor.publishComposite("messages", function() {
-  return {
-    find: function() {
-      // XXX: messages only for current posts
-      return Messages.find({});
-    }
-  }
-});
 
 Meteor.publishComposite("tags", function() {
   return  {
     find: function() {
-      // XXX: maybe sort tags by popularity/score here
-      // list most popular ones only
-      // XXX: need limit on this 10/20 etc.
       return Tags.find({}, {
         sort: {createdAt: -1},
         fields: {name: 1}
@@ -22,7 +11,9 @@ Meteor.publishComposite("tags", function() {
 });
 
 // home
-Meteor.publishComposite("posts", function(page) {
+Meteor.publishComposite("posts", function(page, sort) {
+  console.log(page);
+  console.dir(sort);
   var page = page || 0;
   var batch = 20;
 
@@ -32,7 +23,7 @@ Meteor.publishComposite("posts", function(page) {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
       return Posts.find({}, {
-          sort: {hot: -1, createdAt: -1, score: -1},
+          sort: sort,
           limit: batch,
           skip: batch*page
         }

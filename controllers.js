@@ -31,3 +31,33 @@ PaginatedController = RouteController.extend({
     }
   }
 });
+
+SortedController = RouteController.extend({
+  limit: 20,
+  page: 0,
+  sort: {createdAt: -1},
+  getSortOptions: function () {
+    return this.sort;
+  },
+  getPage: function() {
+    return this.params.page || this.page;
+  }
+});
+
+HotController = SortedController.extend({
+  sort: {hot: -1, createdAt: -1, score: -1},
+  waitOn: function() {
+    console.log(Number(this.getPage()), this.getSortOptions());
+    return [
+      this.subscribe("posts", Number(this.getPage()), this.getSortOptions()),
+      this.subscribe("tags")
+    ];
+  }
+});
+
+
+BestController = SortedController.extend({
+  sort: {score: -1, createdAt: -1},
+  waitOn: function () {
+  }
+});
