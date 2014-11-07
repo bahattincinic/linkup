@@ -1,4 +1,3 @@
-
 Router.map(function() {
   this.route('home', {
     controller: HotController,
@@ -147,13 +146,6 @@ Router.map(function() {
       SEO.set({
         title: 'Dashboard | ' + SEO.settings.title
       });
-    }
-  });
-
-  this.route('profile', {
-    path: '/profile',
-    data: function() {
-      return Meteor.user();
     }
   });
 

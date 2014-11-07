@@ -2,6 +2,12 @@ Template.header.events({
   'click #create_topic': function () {
     $('#newTopicModal').modal('show');
   },
+  'click #login_btn': function(){
+    $('#loginModal').modal('show');
+  },
+  'click #register_btn': function(){
+    $('#registerModal').modal('show');
+  },
 });
 
 Template.home.events({

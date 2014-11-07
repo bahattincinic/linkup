@@ -44,7 +44,6 @@ iron:location@1.0.1
 iron:middleware-stack@1.0.0
 iron:router@1.0.1
 iron:url@1.0.0
-joshowens:accounts-entry@1.0.1
 joshowens:simple-form@0.2.2
 jquery@1.0.1
 json@1.0.1
@@ -80,7 +79,6 @@ schnie:uploader@2.0.3
 service-configuration@1.0.2
 session@1.0.4
 sha@1.0.1
-softwarerero:accounts-t9n@1.0.0
 spacebars-compiler@1.0.3
 spacebars@1.0.3
 srp@1.0.1

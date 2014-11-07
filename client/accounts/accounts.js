@@ -1,19 +1,31 @@
-Meteor.startup(function() {
-  Accounts.ui.config({
-    passwordSignupFields: 'EMAIL_ONLY'
-  });
+Template.login.events({
+	'submit #loginForm': function(e, t){
+		e.preventDefault();
+		var username = $.trim($('#login-username').val());
+        var password = $.trim($('#login-password').val());
+        Meteor.loginWithPassword(username, password, function(error) {
+            if(error){
+                $('#account-username').val('');
+                $('#account-password').val('');
+            }else {
+            	$('#loginModal').modal('hide');
+            }
+        });
+        return false;
+	}
+});
 
-  AccountsEntry.config({
-    homeRoute: '/',
-    dashboardRoute: '/dashboard',
-    profileRoute: '/profile',
-    language: 'en',
-    showSignupCode: false,
-    extraSignUpFields: [{
-      field: "name",
-      label: "Your Name",
-      type: "text",
-      required: true
-    }]
-  });
+Template.register.events({
+	'submit #registerForm': function(e, t){
+		e.preventDefault();
+		var username = $.trim($('#register-username').val());
+        var password = $.trim($('#register-password').val());
+        if(username == '' || password == ''){
+        	return false;
+        }
+        Accounts.createUser({password: password, username: username}, function(err){
+        	$('#registerModal').modal('hide');
+        });
+        return false;
+	}
 });
