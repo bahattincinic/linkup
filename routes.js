@@ -90,7 +90,7 @@ Router.map(function() {
   });
 
   this.route('tagShowPaged', {
-    require: [{collection: Tags}, {collection: Posts}, {params: ['name', 'page']}],
+    requires: [{collection: Tags}, {collection: Posts}],
     path: '/r/:name/:page',
     controller: HotController,
     template: 'tagShow',
@@ -106,8 +106,6 @@ Router.map(function() {
   this.route('dashboard', {
     path: '/dashboard',
     loginRequired: 'entrySignIn',
-    waitOn: function() {
-    },
     onAfterAction: function() {
       SEO.set({
         title: 'Dashboard | ' + SEO.settings.title

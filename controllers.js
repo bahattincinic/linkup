@@ -1,8 +1,7 @@
 
 RequiredController = RouteController.extend({
   routeParams: {},
-  action: function () {
-    // get requirements for this route
+  requirementsCheck: function () {
     var current = Router.current();
     var passes = true;
     var requirements = current.route.options.requires || [];
@@ -16,25 +15,52 @@ RequiredController = RouteController.extend({
         if (!hasDoc)
           passes = false;
       }
-
-      debugger;
-      // if (req.params) {
-      //   req.params.forEach(function (param) {
-      //     this.routeParams.extend({param: this.params[param]});
-      //   });
-      // }
     });
 
-    if (!passes) {
+    return passes;
+  },
+  populateParams: function () {
+    // populate param keys for the first time
+    var extractKeys = function extractKeys(path) {
+      // extract keys starting with ':' from path
+      var keys = [];
+      if (path === '/') {
+        return keys
+      }
+
+      var ll = path.split('/').splice(1);
+      ll.forEach(function (l) {
+        l.charAt(0) === ':' &&  keys.push(l.slice(1));
+      });
+
+      console.warn(keys);
+      return keys;
+    };
+
+    var current = Router.current();
+    var path = current.route.options.path;
+    var params = extractKeys(path);
+
+    if (!params)
+      return {};
+
+    // extract values from this.params using keys obtained earlier
+    var payload = {};
+    params.forEach(function(param) {
+      payload[param] = current.params[param];
+    });
+
+    // enhance!!
+    _.extend(this.routeParams, payload);
+  },
+  action: function () {
+    if (!this.requirementsCheck()) {
       this.render('notFound');
       this.render('header', {to: 'header'});
       this.render('footer', {to: 'footer'});
     } else {
-      if (!this.ready()) {
-        this.render('loading');
-      } else {
-        this.render();
-      }
+      this.populateParams();
+      this.render();
     }
   }
 });
@@ -61,7 +87,7 @@ PagedController = RequiredController.extend({
       return;
     }
 
-    Router.go(paged, {page: page});
+    Router.go(paged, _.extend(this.routeParams, {page: page}));
   },
   nextPage: function () {
     page = Number(this.getPage());
@@ -86,7 +112,6 @@ HotController = PagedController.extend({
                           this.getTagName())
   }
 });
-
 
 // BestController = PagedController.extend({
 //   sort: {score: -1, createdAt: -1},
