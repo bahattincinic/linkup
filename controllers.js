@@ -1,6 +1,9 @@
 
 RequiredController = RouteController.extend({
   routeParams: {},
+  getTagName: function () {
+    return this.params.name || null;
+  },
   requirementsCheck: function () {
     var current = Router.current();
     var passes = true;
@@ -101,9 +104,6 @@ PagedController = RequiredController.extend({
 
 HotController = PagedController.extend({
   sort: {hot: -1, createdAt: -1, score: -1},
-  getTagName: function () {
-    return this.params.name || null;
-  },
   waitOn: function() {
     console.log(Number(this.getPage()), this.getSortOptions(), this.getTagName());
     return this.subscribe("posts",
@@ -113,8 +113,13 @@ HotController = PagedController.extend({
   }
 });
 
-// BestController = PagedController.extend({
-//   sort: {score: -1, createdAt: -1},
-//   waitOn: function () {
-//   }
-// });
+NewController = PagedController.extend({
+  sort: {createdAt: -1, score: -1},
+  waitOn: function () {
+    console.log(Number(this.getPage(), this.getSortOptions(), this.getTagName()));
+    return this.subscribe("posts",
+                          Number(this.getPage()),
+                          this.getSortOptions(),
+                          this.getTagName())
+  }
+});

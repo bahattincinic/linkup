@@ -9,13 +9,13 @@ Router.map(function() {
     }
   });
 
-  // this.route('home', {
-  //   path: '/best',
-  //   controller: BestController,
-  //   data: {
-  //     posts: Posts.find({})
-  //   }
-  // });
+  this.route('homeNew', {
+    path: '/new',
+    controller: NewController,
+    data: {
+      posts: Posts.find({})
+    }
+  });
 
   this.route('homePages', {
     path: '/page/:page',
