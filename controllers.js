@@ -1,7 +1,10 @@
 
 RequiredController = RouteController.extend({
-  action: function () {
-    // get requirements for this route
+  routeParams: {},
+  getTagName: function () {
+    return this.params.name || null;
+  },
+  requirementsCheck: function () {
     var current = Router.current();
     var passes = true;
     var requirements = current.route.options.requires || [];
@@ -17,22 +20,49 @@ RequiredController = RouteController.extend({
       }
     });
 
-    if (!passes) {
+    return passes;
+  },
+  populateParams: function () {
+    // populate param keys for the first time
+    var extractKeys = function extractKeys(path) {
+      // extract keys starting with ':' from path
+      var matches = path.match(/\:([a-z])+/g);
+      if (!matches)  return [];
+
+      // remove ':' from names
+      return matches.map(function (m){ return m.slice(1); });
+    };
+
+    var current = Router.current();
+    var path = current.route.options.path;
+    var params = extractKeys(path);
+
+    if (!params)
+      return {};
+
+    // extract values from this.params using keys obtained earlier
+    var payload = {};
+    params.forEach(function(param) {
+      payload[param] = current.params[param];
+    });
+
+    // enhance!!
+    _.extend(this.routeParams, payload);
+  },
+  action: function () {
+    if (!this.requirementsCheck()) {
       this.render('notFound');
       this.render('header', {to: 'header'});
       this.render('footer', {to: 'footer'});
     } else {
-      if (!this.ready()) {
-        this.render('loading');
-      } else {
-        this.render();
-      }
+      this.populateParams();
+      this.render();
     }
   }
 });
 
 PagedController = RequiredController.extend({
-  sort: {createdAt: -1},
+  sort: {},
   hasPages: function () {return true;},
   getSortOptions: function () {
     return this.sort;
@@ -48,12 +78,12 @@ PagedController = RequiredController.extend({
       // likewise pick parent route if provided, use self otherwise..
       var paged = this.route.options.parentRoute || this.route.getName();
     } else {
-      return;
       // negative page, do nothing..
       // throw new Meteor.Error(404, ' No Such page ');
+      return;
     }
 
-    Router.go(paged, {page: page});
+    Router.go(paged, _.extend(this.routeParams, {page: page}));
   },
   nextPage: function () {
     page = Number(this.getPage());
@@ -68,16 +98,21 @@ PagedController = RequiredController.extend({
 HotController = PagedController.extend({
   sort: {hot: -1, createdAt: -1, score: -1},
   waitOn: function() {
-    console.log(Number(this.getPage()), this.getSortOptions());
-    return [
-      this.subscribe("posts", Number(this.getPage()), this.getSortOptions()),
-      this.subscribe("tags")
-    ];
+    console.log(Number(this.getPage()), this.getSortOptions(), this.getTagName());
+    return this.subscribe("posts",
+                          Number(this.getPage()),
+                          this.getSortOptions(),
+                          this.getTagName())
   }
 });
 
-// BestController = PagedController.extend({
-//   sort: {score: -1, createdAt: -1},
-//   waitOn: function () {
-//   }
-// });
+NewController = PagedController.extend({
+  sort: {createdAt: -1, score: -1},
+  waitOn: function () {
+    console.log(Number(this.getPage(), this.getSortOptions(), this.getTagName()));
+    return this.subscribe("posts",
+                          Number(this.getPage()),
+                          this.getSortOptions(),
+                          this.getTagName())
+  }
+});

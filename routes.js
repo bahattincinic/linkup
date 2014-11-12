@@ -8,13 +8,27 @@ Router.map(function() {
     }
   });
 
-  // this.route('home', {
-  //   path: '/best',
-  //   controller: BestController,
-  //   data: {
-  //     posts: Posts.find({})
-  //   }
-  // });
+  this.route('homeNew', {
+    path: '/new',
+    template: 'home',
+    controller: NewController,
+    childRoute: 'newPages',
+    requires: [{collection: Posts}],
+    data: {
+      posts: Posts.find({})
+    }
+  });
+
+  this.route('newPages', {
+    path: '/new/:page',
+    template: 'home',
+    parentRoute: 'homeNew',
+    controller: NewController,
+    requires: [{collection: Posts}],
+    data: {
+      posts: Posts.find({})
+    }
+  });
 
   this.route('homePages', {
     path: '/page/:page',
@@ -30,16 +44,6 @@ Router.map(function() {
 
   this.route('post', {
     path: '/post',
-    onBeforeAction: function() {
-      // XXX: in here if there are no
-      // Meteor.user() exists, then autocreate
-      // an anonymous user for the poster
-      // https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md#before-and-after-hooks
-    },
-    waitOn: function() {
-      // Post requires tags (aka subreddits)
-      return this.subscribe("tags");
-    },
     data: function() {
       // get all relevant tags here when posting
       // XXX: get all popular 10/20 tasks here
@@ -52,9 +56,6 @@ Router.map(function() {
 
   this.route('tag', {
     path: '/tag',
-    waitOn: function() {
-      return this.subscribe('tags')
-    },
     data: function () {
       return {
         tags: Tags.find({})
@@ -91,27 +92,22 @@ Router.map(function() {
   this.route('tagShow', {
     require: [{collection: Tags}],
     path: '/r/:name',
-    controller: RequiredController,
-    waitOn: function() {
-      return this.subscribe('tag', this.params.name);
-    },
+    controller: HotController,
+    childRoute: 'tagShowPaged',
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
-        posts: Posts.find({}, {
-            sort: {hot: -1, createdAt: -1, score: -1}})
+        posts: Posts.find({})
       }
     }
   });
 
   this.route('tagShowPaged', {
-    require: [{collection: Tags}, {collection: Posts}],
+    requires: [{collection: Tags}, {collection: Posts}],
     path: '/r/:name/:page',
-    controller: PagedController,
+    controller: HotController,
     template: 'tagShow',
-    waitOn: function() {
-      return this.subscribe('tag', this.params.name, this.params.page);
-    },
+    parentRoute: 'tagShow',
     data: function() {
       return {
         tag: Tags.findOne({name: this.params.name}),
@@ -123,8 +119,6 @@ Router.map(function() {
   this.route('dashboard', {
     path: '/dashboard',
     loginRequired: 'entrySignIn',
-    waitOn: function() {
-    },
     onAfterAction: function() {
       SEO.set({
         title: 'Dashboard | ' + SEO.settings.title

@@ -6,16 +6,24 @@
       {{/each}}
   </ul>
 
-  <div class="row">
-    <nav>
-      <ul class="pager">
-        <li class="previous">
-          <a href="#" class="concept-color">&larr; Older</a>
-        </li>
-        <li class="next">
-          <a href="#" class="concept-color">Newer &rarr;</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  {{> paginator}}
+
+</template>
+
+
+<template name="paginator">
+<div class="paginator">
+<div class="row">
+  <nav>
+    <ul class="pager">
+      <li class="previous">
+        <a href="#" class="concept-color">&larr; Older</a>
+      </li>
+      <li class="next">
+        <a href="#" class="concept-color">Newer &rarr;</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</div>
 </template>

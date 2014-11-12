@@ -11,18 +11,29 @@ Meteor.publishComposite("tags", function() {
 });
 
 // home
-Meteor.publishComposite("posts", function(page, sort) {
+Meteor.publishComposite("posts", function(page, sort, tagName) {
+  console.log('sub to posts');
   console.log(page);
   console.dir(sort);
   var page = page || 0;
   var batch = 20;
+  var tagName = tagName || null;
+  var filter = {};
+  if (tagName) {
+    var tag = Tags.findOne({name: tagName});
+    if (tag) {
+      filter['tagId'] = tag._id;
+    }
+  }
+
+  console.log(filter);
 
   /* Publish posts for the home page */
   return {
     find: function () {
       // XXX: will sort this by score soon
       // return Posts.find({}, {limit: 10});
-      return Posts.find({}, {
+      return Posts.find(filter, {
           sort: sort,
           limit: batch,
           skip: batch*page
