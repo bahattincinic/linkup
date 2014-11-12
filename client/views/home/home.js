@@ -19,6 +19,12 @@ Template.home.events({
   }
 });
 
+Template.home.helpers({
+  checkPage: function (expected) {
+    return this.page == expected;
+  }
+});
+
 
 Template.paginator.events({
   'click .previous': function (e, f) {
