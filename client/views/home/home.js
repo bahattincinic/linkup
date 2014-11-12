@@ -8,6 +8,9 @@ Template.header.events({
   'click #register_btn': function(){
     $('#registerModal').modal('show');
   },
+  'click #logout_btn': function(){
+    Meteor.logout();
+  }
 });
 
 Template.home.events({
