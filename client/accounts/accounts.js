@@ -23,8 +23,9 @@ Template.register.events({
         if(username == '' || password == ''){
         	return false;
         }
-        Accounts.createUser({password: password, username: username, function(err){
+        Accounts.createUser({password: password, username: username}, function(err){
         	$('#registerModal').modal('hide');
-        }});
+        });
+        return false;
 	}
 });
