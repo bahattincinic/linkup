@@ -11,8 +11,12 @@
     </div>
   </div>
 
+  <!-- Popup -->
   {{#if currentUser}}
     {{> post }}
+  {{else}}
+    {{> login }}
+    {{> register }}
   {{/if}}
 
   {{> yield region="footer"}}
