@@ -1,12 +1,12 @@
 Template.login.events({
-	'submit #loginForm': function(){
+	'submit #loginForm': function(e, t){
 		e.preventDefault();
-		var username = $.trim(t.find('#account-username').value);
-        var password = $.trim(t.find('#account-password').value);
+		var username = $.trim($('#login-username').val());
+        var password = $.trim($('#login-password').val());
         Meteor.loginWithPassword(username, password, function(error) {
             if(error){
-                t.find('#account-username').value = '';
-                t.find('#account-password').value = '';
+                $('#account-username').val('');
+                $('#account-password').val('');
             }else {
             	$('#loginModal').modal('hide');
             }
@@ -16,10 +16,10 @@ Template.login.events({
 });
 
 Template.register.events({
-	'submit #registerForm': function(){
+	'submit #registerForm': function(e, t){
 		e.preventDefault();
-		var username = $.trim(t.find('#account-username').value);
-        var password = $.trim(t.find('#account-password').value);
+		var username = $.trim($('#register-username').val());
+        var password = $.trim($('#register-password').val());
         if(username == '' || password == ''){
         	return false;
         }
