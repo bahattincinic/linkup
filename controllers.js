@@ -26,18 +26,11 @@ RequiredController = RouteController.extend({
     // populate param keys for the first time
     var extractKeys = function extractKeys(path) {
       // extract keys starting with ':' from path
-      var keys = [];
-      if (path === '/') {
-        return keys
-      }
+      var matches = path.match(/\:([a-z])+/g);
+      if (!matches)  return [];
 
-      var ll = path.split('/').splice(1);
-      ll.forEach(function (l) {
-        l.charAt(0) === ':' &&  keys.push(l.slice(1));
-      });
-
-      console.warn(keys);
-      return keys;
+      // remove ':' from names
+      return matches.map(function (m){ return m.slice(1); });
     };
 
     var current = Router.current();
