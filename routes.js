@@ -1,11 +1,16 @@
+
 Router.map(function() {
   this.route('home', {
     controller: HotController,
     childRoute: 'homePages',
     path: '/',
-    data: {
-      posts: Posts.find({}),
-      page:'hot'
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort}),
+        page: router.type
+      }
     }
   });
 
@@ -15,8 +20,12 @@ Router.map(function() {
     requires: [{collection: Posts}],
     template: 'userShow',
     path: '/user/:username',
-    data: {
-      posts: Posts.find({})
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort})
+      }
     }
   });
 
@@ -26,8 +35,12 @@ Router.map(function() {
     template: 'userShow',
     path: '/user/:username/:page',
     requires: [{collection: Posts}],
-    data: {
-      posts: Posts.find({})
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort})
+      }
     }
   });
 
@@ -37,9 +50,13 @@ Router.map(function() {
     controller: NewController,
     childRoute: 'newPages',
     requires: [{collection: Posts}],
-    data: {
-      posts: Posts.find({}),
-      page:'new'
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort}),
+        page: router.type
+      }
     }
   });
 
@@ -49,9 +66,13 @@ Router.map(function() {
     parentRoute: 'homeNew',
     controller: NewController,
     requires: [{collection: Posts}],
-    data: {
-      posts: Posts.find({}),
-      page:'new'
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort}),
+        page: router.type
+      }
     }
   });
 
@@ -61,21 +82,13 @@ Router.map(function() {
     template: 'home',
     parentRoute: 'home',
     requires: [{collection: Posts}],
-    data: {
-      posts: Posts.find({}),
-      tags: Tags.find({}),
-      page:'hot'
-    }
-  });
-
-  this.route('post', {
-    path: '/post',
-    data: function() {
-      // get all relevant tags here when posting
-      // XXX: get all popular 10/20 tasks here
-      // should sort by score/popularity
-      return  {
-        tags: Tags.find({})
+    data: function () {
+      var router = Router.current();
+      var sort = router.sort || null;
+      return {
+        posts: Posts.find({}, {sort: sort}),
+        tags: Tags.find({}),
+        page: router.type
       }
     }
   });
@@ -100,11 +113,7 @@ Router.map(function() {
         // no post here
         this.render('notFound');
       } else {
-        if (!this.ready()) {
-          this.render('loading');
-        } else {
-          this.render();
-        }
+        this.render();
       }
     },
     data: function () {

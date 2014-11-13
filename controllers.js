@@ -130,9 +130,13 @@ PagedController = RequiredController.extend({
 });
 
 HotController = PagedController.extend({
+  type: 'hot',
   sort: {hot: -1, createdAt: -1, score: -1},
   waitOn: function() {
-    console.log(Number(this.getPage()), this.getSortOptions(), this.getFilteringOptions());
+    console.log(
+      Number(this.getPage()),
+      this.getSortOptions(),
+      this.getFilteringOptions());
     return this.subscribe("posts",
                           Number(this.getPage()),
                           this.getSortOptions(),
@@ -141,13 +145,16 @@ HotController = PagedController.extend({
 });
 
 NewController = PagedController.extend({
+  type: 'new',
   sort: {createdAt: -1, score: -1},
   waitOn: function () {
-    console.log(Number(this.getPage()), this.getSortOptions(), this.getFilteringOptions());
+    console.log(
+      Number(this.getPage()),
+      this.getSortOptions(),
+      this.getFilteringOptions());
     return this.subscribe("posts",
                           Number(this.getPage()),
                           this.getSortOptions(),
                           this.getFilteringOptions())
   }
 });
-
