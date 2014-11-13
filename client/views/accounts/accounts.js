@@ -9,6 +9,7 @@ Template.login.events({
                 $('#account-password').val('');
             }else {
             	$('#loginModal').modal('hide');
+                $('.modal-backdrop').remove();
             }
         });
         return false;
@@ -25,6 +26,7 @@ Template.register.events({
         }
         Accounts.createUser({password: password, username: username}, function(err){
         	$('#registerModal').modal('hide');
+            $('.modal-backdrop').remove();
         });
         return false;
 	}

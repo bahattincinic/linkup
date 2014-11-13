@@ -19,13 +19,13 @@
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                       <img src="/images/default.jpg" alt="Bill" class="img-circle" width="40"/>
-                      {{ currentUser.profile.name }} <span class="caret"></span>
+                      {{ currentUser.username }} <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu" role="menu">
                       <li><a href='#'>Dashboard</a></li>
-                      <li><a href="{{ pathFor 'profile' }}">Profile</a></li>
-                      <li><a href="#">Create New Topic</a></li>
-                      <li><a href="{{ pathFor 'entrySignOut' }}">Logout</a></li>
+                      <li><a href="#">Profile</a></li>
+                      <li><a href="#" id="create_topic">Create New Topic</a></li>
+                      <li><a href="#" id="logout_btn">Logout</a></li>
                   </ul>
               </li>
             </ul>

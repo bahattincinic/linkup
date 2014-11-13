@@ -8,11 +8,20 @@ Template.header.events({
   'click #register_btn': function(){
     $('#registerModal').modal('show');
   },
+  'click #logout_btn': function(){
+    Meteor.logout();
+  }
 });
 
 Template.home.events({
   'click #create_tag': function () {
     Router.go('tag');
+  }
+});
+
+Template.home.helpers({
+  checkPage: function (expected) {
+    return this.page == expected;
   }
 });
 

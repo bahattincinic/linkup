@@ -4,7 +4,8 @@ Router.map(function() {
     childRoute: 'homePages',
     path: '/',
     data: {
-      posts: Posts.find({})
+      posts: Posts.find({}),
+      page:'hot'
     }
   });
 
@@ -37,7 +38,8 @@ Router.map(function() {
     childRoute: 'newPages',
     requires: [{collection: Posts}],
     data: {
-      posts: Posts.find({})
+      posts: Posts.find({}),
+      page:'new'
     }
   });
 
@@ -48,7 +50,8 @@ Router.map(function() {
     controller: NewController,
     requires: [{collection: Posts}],
     data: {
-      posts: Posts.find({})
+      posts: Posts.find({}),
+      page:'new'
     }
   });
 
@@ -60,7 +63,8 @@ Router.map(function() {
     requires: [{collection: Posts}],
     data: {
       posts: Posts.find({}),
-      tags: Tags.find({})
+      tags: Tags.find({}),
+      page:'hot'
     }
   });
 

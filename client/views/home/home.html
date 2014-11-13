@@ -1,4 +1,18 @@
 <template name="home">
+
+<div class="panel panel-default">
+  <ul class="nav nav-tabs" role="tablist">
+
+      <li class="{{#if checkPage "hot"}}active{{else}}{{/if}}">
+        <a href="/">Hot</a>
+      </li>
+
+      <li class="{{#if checkPage "new"}}active{{else}}{{/if}}">
+        <a href="/new">New</a>
+      </li>
+  </ul>
+</div>
+
   <ul class="timeline-list">
     <li></li>
     {{#each posts }}
