@@ -7,3 +7,7 @@ A starting point for MeteorJS applications. Includes iron-router, Bootstrap 3, F
 # Use local mongodb instead of minimongo
 set -x MONGO_URL mongodb://localhost:27017/linkup
 set -x NODE_OPTIONS '--debug-brk'
+
+
+### mongodb config
+db.createUser(   {     user: "admin",     pwd: "admin",     roles:     [       {         role: "userAdminAnyDatabase",         db: "admin"       }     ]   } )
