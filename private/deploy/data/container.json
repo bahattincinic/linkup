@@ -1,0 +1,11 @@
+{
+ "container": {
+  "name": "mongodata"
+ },
+ "run": {
+    "command": "true"
+  },
+ "image": {
+  "name": "linkup/mongodata"
+  }
+}
