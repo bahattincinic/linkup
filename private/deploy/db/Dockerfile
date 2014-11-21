@@ -7,7 +7,11 @@ RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
 RUN apt-get update && apt-get install -y mongodb-org && mkdir -p /data/mongo
 
 ADD mongod.conf /etc/mongod.conf
+ADD scripts/mongo_admin.sh /scripts/mongo_admin.sh
+
 # expose mongodb port to all containers by default
 EXPOSE 27017
+
+RUN mkdir -p /data/db
 
 CMD /usr/bin/mongod --config /etc/mongod.conf

@@ -2,7 +2,7 @@ FROM stackbrew/busybox:latest
 MAINTAINER Tom Offermann <tom@offermann.us>
 
 # Create data directory
-RUN mkdir -p /data/mongo
+RUN mkdir -p /data/db
 
 # Create /data volume
 VOLUME /data

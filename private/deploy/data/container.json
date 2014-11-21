@@ -1,11 +1,6 @@
 {
- "container": {
-  "name": "mongodata"
- },
- "run": {
-    "command": "true"
-  },
- "image": {
-  "name": "linkup/mongodata"
-  }
+ "container_name": "mongodata",
+ "command" : "true",
+ "run": "sudo docker run -d --name %(container_name)s %(image_name)s %(command)s",
+ "image_name": "linkup/mongodata"
 }
