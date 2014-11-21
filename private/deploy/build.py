@@ -61,6 +61,21 @@ def run_container(config):
   print yellow(command)
   return run(command)
 
+def clean_images():
+  command = "sudo docker images"
+  out = run(command)
+  for x in xrange(0, len(out)):
+    line = out[x]
+    if not line:
+      continue
+    words = [a for a in line.split(' ') if a]
+    print yellow(words)
+    del_command = "sudo docker rmi %(image_id)s"
+    if words[0] == words[1] == '<none>':
+      run(del_command % {'image_id': words[2]})
+      print red('del')
+
+
 if __name__ == "__main__":
   config = load_config()
   print magenta(config)
@@ -68,6 +83,9 @@ if __name__ == "__main__":
   # search for run
   if 'run' in sys.argv:
     run_container(config)
+  elif 'clean' in sys.argv:
+    print red('clean')
+    clean_images()
   else:
     if scan_container(config['container_name']):
       print red('container found ..')
@@ -79,6 +97,4 @@ if __name__ == "__main__":
 
     # finally build image
     build_image(config['image_name'])
-
-
 
