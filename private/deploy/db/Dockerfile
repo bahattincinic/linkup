@@ -14,4 +14,4 @@ EXPOSE 27017
 
 RUN mkdir -p /data/db
 
-CMD /usr/bin/mongod --config /etc/mongod.conf
+CMD /usr/bin/mongod --nojournal --config /etc/mongod.conf
