@@ -8,8 +8,8 @@ A starting point for MeteorJS applications. Includes iron-router, Bootstrap 3, F
 set -x MONGO_URL mongodb://localhost:27017/linkup
 set -x NODE_OPTIONS '--debug-brk'
 
-### mongodb config
-db.createUser({user: 'admin', pwd: 'admin', roles: [ 'root' ] });
+### mongodb config (optional)
+mongo admin --eval  "db.createUser({user: 'admin', pwd: 'admin', roles: [ 'root' ] });"
 # mongo admin --eval "db.createUser({user: 'linkup', pwd: 'linkup', roles: [{ role: 'dbOwner', db: 'linkup' }]});"
 mongo admin --eval "db.createUser({user: 'linkup', pwd: 'linkup', roles: [{ role: 'read', db: 'admin' }]});"
 
