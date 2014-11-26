@@ -3,3 +3,5 @@
 *.sublime-workspace
 dump
 node_modules
+*.tgz
+bundle

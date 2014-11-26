@@ -1,41 +1,41 @@
 #!/usr/bin/env python
 import os
 import sys
-import simplejson as json
+import shutil
 from subprocess import call, check_output
 from fabric.colors import (green, red, cyan, magenta, yellow)
+from tivor.action import Action
+from tivor.utils import run_command, load_config
 
 
-def run(command):
-  assert command
-  out = check_output(command.split(' '))
-  return [x for x in out.split('\n') if x]
+class ScanContainer(Action):
+  def action(self):
+    """
+      Scans for active containers and removes them
+      if exists with the same name
+    """
+    container_name = self.config.get('container_name')
+    print cyan('scan for container: %s' % container_name)
 
-def load_config():
-  config = {}
+    scan = 'sudo docker ps -a'
+    out = run_command(scan)
+    for x in xrange(1, len(out)):
+      line = out[x]
+      if line:
+        parsed = [a for a in line.split(' ') if a]
+        if parsed[-1] == container_name:
+          print cyan('return for container: %s' % container_name)
+          command = 'sudo docker rm %s' % container_name
+          return run_command(command)
+    return False
 
-  with open('container.json', 'r') as f:
-    config = json.loads(f.read())
-  return config
 
-def scan_container(container_name):
-  print cyan('scan for container: %s' % container_name)
-
-  scan = 'sudo docker ps -a'
-  out = run(scan)
-  for x in xrange(1, len(out)):
-    line = out[x]
-    if line:
-      parsed = [a for a in line.split(' ') if a]
-      if parsed[-1] == container_name:
-        return True
-  return False
-
-def scan_image(image_name):
+def scan_image(config):
+  image_name = config.get('image_name')
   print cyan('scan for image: %s' % image_name)
 
   scan = 'sudo docker images'
-  out = run(scan)
+  out = run_command(scan)
   for x in xrange(1, len(out)):
     if out[x]:
       line = [a for a in out[x].split(' ') if a][0]
@@ -45,26 +45,62 @@ def scan_image(image_name):
 
 def remove_image(image_name):
   command = 'sudo docker rmi %(image_name)s'  % {'image_name': image_name}
-  return run(command)
+  return run_command(command)
 
-def remove_container(container_name):
-  print cyan('return for container: %s' % container_name)
-  command = 'sudo docker rm %s' % container_name
-  return run(command)
 
-def build_image(image_name):
-  print cyan('build image: %s' % image_name)
-  command  = 'sudo docker build -t %s .' % image_name
-  return call(command.split(' '))
+class BuildAppMixin(object):
+  def action(self):
+    image_name = self.config.get('image_name')
+    print cyan('build image: %s' % image_name)
+    command  = 'sudo docker build -t %s .' % image_name
+    return call(command.split(' '))
+
+
+class BuildImage(BuildAppMixin, Action):
+  before_actions = ['ScanContainer']
+
+
+class BuildAppImageAction(BuildAppMixin, Action):
+  before_actions = ['ScanContainer', 'BundleAction']
+  after_actions = []
+
+
+class BundleAction(Action):
+  before_actions = []
+  after_actions = []
+
+  def action(self):
+    assert (config and config.get('root') and config.get('bundle_name'))
+
+    current = os.getcwd()
+    # check for old bundle dir
+    if os.path.isdir('bundle'):
+      shutil.rmtree('bundle')
+
+    os.chdir(config.get('root'))
+    # check for old tgz file
+    if os.path.exists(config.get('bundle_name')):
+      os.remove(config.get('bundle_name'))
+
+    bundle = "meteor bundle %s" % config.get('bundle_name')
+    print yellow('extract bundle to %s' % current)
+    extract_bundle = "tar xvfz %s -C %s" % (config.get('bundle_name'), current)
+    run_command(bundle)
+    print yellow(extract_bundle)
+    run_command(extract_bundle)
+    os.chdir(current)
+    print red('done bundle')
+    return
+
 
 def run_container(config):
   command = config['run'] % config
   print yellow(command)
-  return run(command)
+  return run_command(command)
 
 def clean_images():
   command = "sudo docker images"
-  out = run(command)
+  out = run_command(command)
   for x in xrange(0, len(out)):
     line = out[x]
     if not line:
@@ -73,21 +109,12 @@ def clean_images():
     print yellow(words)
     del_command = "sudo docker rmi %(image_id)s"
     if words[0] == words[1] == '<none>':
-      run(del_command % {'image_id': words[2]})
+      run_command(del_command % {'image_id': words[2]})
       print red('del')
 
-
-def bundle(config):
-  if not (config and config.get('root') and config.get('bundle_name')):
-    print red('root or config missin')
-    return
-
-  current = os.getcwd()
-  os.chdir(config.get('root'))
-  bundle = 'meteor bundle %s' % config.get('bundle_name')
-  run(bundle)
-  os.chdir(current)
-  print red('done bundle')
+def clear_bundle():
+  print yellow('will clear bundle here %s' % os.getcwd())
+  shutil.rmtree('bundle')
 
 
 if __name__ == "__main__":
@@ -102,16 +129,6 @@ if __name__ == "__main__":
     clean_images()
   elif 'bundle' in sys.argv:
     print red('bundle')
-    bundle(config)
+    BundleAction(config).run()
   else:
-    if scan_container(config['container_name']):
-      print red('container found ..')
-      remove_container(config['container_name'])
-
-    # if scan_image(config['image_name']):
-    #   print red('image found, removing..')
-    #   remove_image(config['image_name'])
-
-    # finally build image
-    build_image(config['image_name'])
-
+    BuildImage(config).run()
