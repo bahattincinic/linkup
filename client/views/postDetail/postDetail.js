@@ -26,7 +26,7 @@ Template.postDetail.helpers({
   getAuthorFullname: function(){
      var authorId = this.authorId;
      var user = Meteor.users.findOne(authorId);
-     if(user){
+     if(user) {
        return user.profile.name;
      }
      return 'Anonymous';
@@ -34,17 +34,20 @@ Template.postDetail.helpers({
 });
 
 Template.postDetail.events({
-  'click .post-detail': function () {
+  'click .post-detail': function (e) {
+    e.preventDefault();
     Router.go('postShow', {_id: this._id});
   },
-  'click .upvote': function () {
+  'click .upvote': function (e) {
+    e.preventDefault();
     if (Meteor.user()) {
       Meteor.call('upvote', this._id, Meteor.userId());
     }else {
       Router.go('entrySignIn');
     }
   },
-  'click .downvote': function () {
+  'click .downvote': function (e) {
+    e.preventDefault();
     if (Meteor.user()) {
       Meteor.call('downvote', this._id, Meteor.userId());
     }else {

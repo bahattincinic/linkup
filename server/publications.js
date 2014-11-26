@@ -12,7 +12,7 @@ Meteor.publishComposite("tags", function() {
 
 // home
 Meteor.publishComposite("posts", function(page, sort, filterOptions) {
-  console.log('sub to posts');
+  console.log('----------------');
   console.log(page);
   console.dir(sort);
   var page = page || 0;
@@ -22,15 +22,35 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
 
   // we expect an array
   if (filterOptions instanceof Array && filterOptions) {
-    filterOptions.forEach(function (option) {
-      var doc = eval(option.collection).findOne(option.filter);
-      if (doc && option.key) {
-        filter[option.key] = doc._id;
-      }
-    });
+    try {
+      filterOptions.forEach(function (option) {
+        console.log(option);
+        var doc = eval(option.collection).findOne(option.filter);
+        console.log(doc);
+        if (doc && option.key) {
+          filter[option.key] = doc._id;
+        } else {
+          /**
+            No doc returned via filter option
+            or option key was absent,
+            in that case return nothing from subscription
+          */
+
+          throw new Meteor.Error(404, 'Error 404: Not found');
+        }
+      });
+    } catch (e) {
+      // return nothing
+      return {
+        find: function() {
+          return Posts.find('nothing');
+        }
+      };
+    }
   }
 
   console.log(filter);
+  console.log('----------------');
 
   /* Publish posts for the home page */
   return {

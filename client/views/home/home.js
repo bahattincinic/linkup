@@ -1,20 +1,25 @@
 Template.header.events({
-  'click #create_topic': function () {
+  'click #create_topic': function (e) {
+    e.preventDefault();
     $('#newTopicModal').modal('show');
   },
-  'click #login_btn': function(){
+  'click #login_btn': function(e){
+    e.preventDefault();
     $('#loginModal').modal('show');
   },
-  'click #register_btn': function(){
+  'click #register_btn': function(e){
+    e.preventDefault();
     $('#registerModal').modal('show');
   },
-  'click #logout_btn': function(){
+  'click #logout_btn': function(e){
+    e.preventDefault();
     Meteor.logout();
   }
 });
 
 Template.home.events({
-  'click #create_tag': function () {
+  'click #create_tag': function (e) {
+    e.preventDefault();
     Router.go('tag');
   }
 });
@@ -24,7 +29,6 @@ Template.home.helpers({
     return this.page == expected;
   }
 });
-
 
 Template.paginator.events({
   'click .previous': function (e, f) {
