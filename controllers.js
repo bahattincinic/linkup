@@ -143,6 +143,12 @@ HotController = PagedController.extend({
   }
 });
 
+PostDetailController = RequiredController.extend({
+  waitOn: function() {
+    return this.subscribe("post", this.params._id);
+  }
+});
+
 NewController = PagedController.extend({
   type: 'new',
   sort: {createdAt: -1, score: -1},

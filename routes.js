@@ -104,7 +104,7 @@ Router.map(function() {
 
   this.route('postShow', {
     path: '/post/:_id',
-    controller: HotController, // bring me the hot ones
+    controller: PostDetailController, // bring me the hot ones
     requires: [{collection: Posts}], // must contain a Post
     data: function () {
       return {

@@ -3,7 +3,8 @@ Template.postShow.rendered = function () {
 };
 
 Template.postShow.events({
-  'click #insertMessage, submit #messageForm': function () {
+  'click #insertMessage, submit #messageForm': function (e) {
+    e.preventDefault();
     var postId = $.trim($('input[name=postId]').val());
     var body = $.trim($('input[name=body]').val());
 
@@ -26,5 +27,3 @@ Template.postShow.events({
     return false;
   }
 });
-
-

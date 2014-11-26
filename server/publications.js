@@ -10,6 +10,13 @@ Meteor.publishComposite("tags", function() {
   }
 });
 
+Filter = function () {
+  this.filter = function (filterOptions) {
+
+  }
+}
+
+
 // home
 Meteor.publishComposite("posts", function(page, sort, filterOptions) {
   console.log('----------------');
@@ -17,16 +24,13 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
   console.dir(sort);
   var page = page || 0;
   var batch = 20;
-  var tagName = tagName || null;
   var filter = {};
 
   // we expect an array
-  if (filterOptions instanceof Array && filterOptions) {
+  if (filterOptions && filterOptions instanceof Array) {
     try {
       filterOptions.forEach(function (option) {
-        console.log(option);
         var doc = eval(option.collection).findOne(option.filter);
-        console.log(doc);
         if (doc && option.key) {
           filter[option.key] = doc._id;
         } else {
@@ -35,7 +39,6 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
             or option key was absent,
             in that case return nothing from subscription
           */
-
           throw new Meteor.Error(404, 'Error 404: Not found');
         }
       });
@@ -76,6 +79,7 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
 
 Meteor.publishComposite("post", function(postId) {
   /* publish single post for post chat page */
+
   return {
     find: function() {
       return Posts.find({_id: postId})
@@ -84,7 +88,15 @@ Meteor.publishComposite("post", function(postId) {
       {
         find: function (post) {
           return Messages.find({postId: post._id})
-        }
+        },
+        // return message owner as well
+        children: [
+          {
+            find: function (message) {
+              return Meteor.users.find(message.createdBy)
+            }
+          }
+        ]
       },
       {
         find: function (post) {
