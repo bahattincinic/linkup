@@ -103,12 +103,12 @@ Router.map(function() {
   });
 
   this.route('postShow', {
-    path: '/post/:_id',
-    controller: PostDetailController, // bring me the hot ones
+    path: '/post/:_id/:slug',
+    controller: PostDetailController, // bring me detail
     requires: [{collection: Posts}], // must contain a Post
     data: function () {
       return {
-        post: Posts.findOne({_id: this.params._id}),
+        post: Posts.findOne(this.params._id),
         messages: Messages.find({postId: this.params._id})
       }
     }

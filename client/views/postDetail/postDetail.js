@@ -22,21 +22,13 @@ Template.postDetail.helpers({
         return false;
     }
     return false;
-  },
-  getAuthorFullname: function(){
-     var authorId = this.authorId;
-     var user = Meteor.users.findOne(authorId);
-     if(user) {
-       return user.profile.name;
-     }
-     return 'Anonymous';
   }
 });
 
 Template.postDetail.events({
   'click .post-detail': function (e) {
     e.preventDefault();
-    Router.go('postShow', {_id: this._id});
+    Router.go('postShow', {_id: this._id, slug: this.slug});
   },
   'click .upvote': function (e) {
     e.preventDefault();

@@ -72,6 +72,11 @@ Meteor.publishComposite("posts", function(page, sort, filterOptions) {
         find: function (post) {
           return Votes.find({postId: post._id});
         }
+      },
+      {
+        find: function (post) {
+          return Meteor.users.find(post.authorId);
+        }
       }
     ]
   }

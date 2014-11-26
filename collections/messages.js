@@ -5,9 +5,8 @@ Messages.before.insert(function (userId, doc) {
   doc.createdBy = userId;
 });
 
-
 Messages.helpers({
-    authorName: function () {
-        return Meteor.users.findOne(this.createdBy).username;
+    author: function () {
+        return Meteor.users.findOne(this.createdBy);
     }
 });
