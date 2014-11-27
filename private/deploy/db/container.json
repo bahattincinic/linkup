@@ -2,5 +2,6 @@
  "container_name": "mongo",
  "data_container": "mongodata",
  "run": "sudo docker run -d --name %(container_name)s --volumes-from %(data_container)s %(image_name)s",
- "image_name": "linkup/mongo"
+ "image_name": "linkup/mongo",
+ "stop": "sudo docker exec %(container_name)s mongo --eval \"db.getSiblingDB('admin').shutdownServer()\"" 
 }

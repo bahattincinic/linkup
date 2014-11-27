@@ -1,8 +1,9 @@
 {
+ "action": "BuildAppImageAction",
  "bundle_name": "linkup.tgz",
  "root": "../../../",
- "container_name": "mongo",
- "data_container": "mongodata",
- "run": "sudo docker run -d --name %(container_name)s --volumes-from %(data_container)s %(image_name)s",
- "image_name": "linkup/mongo"
+ "container_name": "linkup",
+ "db_container": "mongodb",
+ "run": "sudo docker run -d --name %(container_name)s --link db:%(db_container)s %(image_name)s",
+ "image_name": "linkup/app"
 }
