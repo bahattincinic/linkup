@@ -3,7 +3,9 @@
  "bundle_name": "linkup.tgz",
  "root": "../../../",
  "container_name": "linkup",
+ "host_port": 8000,
+ "container_port": 3000,
  "db_container": "mongo",
- "run": "sudo docker run -d --name %(container_name)s --link %(db_container)s:db %(image_name)s",
+ "run": "sudo docker run -d -p 127.0.0.1:%(host_port)s:%(container_port)s --name %(container_name)s --link %(db_container)s:db %(image_name)s",
  "image_name": "linkup/app"
 }
