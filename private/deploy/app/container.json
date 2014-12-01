@@ -4,6 +4,6 @@
  "root": "../../../",
  "container_name": "linkup",
  "db_container": "mongo",
- "run": "sudo docker run -d --name %(container_name)s --link db:%(db_container)s %(image_name)s",
+ "run": "sudo docker run -d --name %(container_name)s --link %(db_container)s:db %(image_name)s",
  "image_name": "linkup/app"
 }
