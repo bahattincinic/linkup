@@ -50,7 +50,11 @@ Meteor.methods({
           }
 
           if (Meteor.isServer) {
-            mq.publish('votes', {vote: type, post: postId});
+            if (mq) {
+              mq.publish('votes', {vote: type, post: postId});
+            } else {
+              console.err('Unable to connect to amqp provider (i.e. RabbitMQ)..');
+            }
           }
         });
       });
