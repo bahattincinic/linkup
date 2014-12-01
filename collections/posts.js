@@ -19,7 +19,7 @@ Posts.before.insert(function (userId, doc) {
 
   // generate slug from title for post detail url
   if (Meteor.isServer) {
-    var slug = Npm.require('slug');
+    var slug = Meteor.npmRequire('slug');
     doc.slug = slug(doc.title);
   }
 });

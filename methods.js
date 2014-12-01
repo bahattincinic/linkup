@@ -1,6 +1,6 @@
 
 if (Meteor.isServer) {
-  var mq = Npm.require('amqp').createConnection({host: 'localhost'});
+  var mq = Meteor.npmRequire('amqp').createConnection({host: 'localhost'});
 }
 
 Meteor.methods({
