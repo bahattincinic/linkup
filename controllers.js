@@ -1,21 +1,14 @@
 
 FilteringController = RouteController.extend({
-  getTagName: function () {
-    return this.params.name || null;
-  },
-  getUserName: function () {
-    return this.params.username || null;
-  },
   getFilteringOptions: function () {
     var filtering = [];
-    var username = this.getUserName();
-    var tagname = this.getTagName();
+    var username = this.params.username || null;
+    var tagname = this.params.name || null;
+    var post_id = this.params._id || null;
 
     if (username) {
       userFilter = {
-        collection: 'Meteor.users',
-        filter: {username: username},
-        key: 'authorId'
+        collection: 'Meteor.users', filter: {username: username}, key: 'authorId'
       }
 
       filtering.push(userFilter);
@@ -23,12 +16,18 @@ FilteringController = RouteController.extend({
 
     if (tagname) {
       tagFilter = {
-        collection: 'Tags',
-        filter: {name: tagname},
-        key: 'tagId'
+        collection: 'Tags', filter: {name: tagname}, key: 'tagId'
       }
 
       filtering.push(tagFilter);
+    }
+
+    if (post_id) {
+      postFilter = {
+        collection: 'Posts', filter: {_id: post_id}, key: '_id'
+      }
+
+      filtering.push(postFilter);
     }
 
     return filtering;
@@ -141,6 +140,12 @@ HotController = PagedController.extend({
                           Number(this.getPage()),
                           this.getSortOptions(),
                           this.getFilteringOptions())
+  }
+});
+
+PostDetailController = RequiredController.extend({
+  waitOn: function() {
+    return this.subscribe("post", this.params._id);
   }
 });
 

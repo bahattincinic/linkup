@@ -103,29 +103,22 @@ Router.map(function() {
   });
 
   this.route('postShow', {
-    path: '/post/:_id',
-    waitOn: function() {
-      return this.subscribe("post", this.params._id);
-    },
-    action: function () {
-      // we expect exactly one post here
-      if (Posts.find().count() !== 1) {
-        // no post here
-        this.render('notFound');
-      } else {
-        this.render();
-      }
-    },
+    path: '/post/:_id/:slug',
+    controller: PostDetailController, // bring me detail
+    requires: [{collection: Posts}], // must contain a Post
     data: function () {
       return {
-        post: Posts.findOne({_id: this.params._id}),
+        post: Posts.findOne(this.params._id),
         messages: Messages.find({postId: this.params._id})
       }
     }
   });
 
   this.route('tagShow', {
-    require: [{collection: Tags}],
+    requires: [
+      {collection: Tags},
+      {collection: Posts}
+    ],
     path: '/r/:name',
     controller: HotController,
     childRoute: 'tagShowPaged',

@@ -22,29 +22,24 @@ Template.postDetail.helpers({
         return false;
     }
     return false;
-  },
-  getAuthorFullname: function(){
-     var authorId = this.authorId;
-     var user = Meteor.users.findOne(authorId);
-     if(user){
-       return user.profile.name;
-     }
-     return 'Anonymous';
   }
 });
 
 Template.postDetail.events({
-  'click .post-detail': function () {
-    Router.go('postShow', {_id: this._id});
+  'click .post-detail': function (e) {
+    e.preventDefault();
+    Router.go('postShow', {_id: this._id, slug: this.slug});
   },
-  'click .upvote': function () {
+  'click .upvote': function (e) {
+    e.preventDefault();
     if (Meteor.user()) {
       Meteor.call('upvote', this._id, Meteor.userId());
     }else {
       Router.go('entrySignIn');
     }
   },
-  'click .downvote': function () {
+  'click .downvote': function (e) {
+    e.preventDefault();
     if (Meteor.user()) {
       Meteor.call('downvote', this._id, Meteor.userId());
     }else {

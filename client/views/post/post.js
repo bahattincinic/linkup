@@ -15,7 +15,9 @@ Template.post.events({
         url: url,
         channels: channels,
         authorId: Meteor.userId()
-      }, function (err, postId) {
+      }, insertCb);
+
+      function insertCb(err, postId) {
         if (err) {
           throw err;
           return;
@@ -25,8 +27,10 @@ Template.post.events({
         Meteor.call('upvote', postId, Meteor.userId());
         $('#newTopicModal').modal('hide');
         $('#topic')[0].reset();
-        Router.go('postShow', {_id: postId});
-      });
+        // refresh
+        var self = Posts.findOne(postId);
+        Router.go('postShow', {_id: postId, slug: self.slug});
+      };
     } else {
       throw new Meteor.Error('XXX: missing data');
     }
