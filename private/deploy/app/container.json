@@ -3,6 +3,7 @@
  "bundle_name": "linkup.tgz",
  "root": "../../../",
  "container_name": "linkup",
+ "runtime_required": ["mongo", "rabbitmq"],
  "host_port": 8000,
  "container_port": 3000,
  "db_container": "mongo",
