@@ -50,7 +50,7 @@ Meteor.methods({
           }
 
           if (Meteor.isServer) {
-            // mq.publish('votes', {vote: type, post: postId});
+            mq.publish('votes', {vote: type, post: postId});
           }
         });
       });

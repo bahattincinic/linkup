@@ -1,5 +1,5 @@
 {
  "container_name": "rabbitmq",
- "run": "sudo docker run -d -p 5671:5672 -p 15671:15672 --name %(container_name)s %(image_name)s",
+ "run": "sudo docker run -d --name %(container_name)s %(image_name)s",
  "image_name": "dockerfile/rabbitmq"
 }
