@@ -1,6 +1,5 @@
 {
  "container_name": "mongo",
- "runtime_required": ["mongodata"]
  "data_container": "mongodata",
  "run": "sudo docker run -d --name %(container_name)s --volumes-from %(data_container)s %(image_name)s",
  "image_name": "linkup/mongo",

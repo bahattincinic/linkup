@@ -8,6 +8,6 @@
  "container_port": 3000,
  "db_container": "mongo",
  "amqp_container": "rabbitmq",
- "run": "sudo docker run -d -p 127.0.0.1:%(host_port)s:%(container_port)s --name %(container_name)s --link %(db_container)s:db --link  %(amqp_container)  %(image_name)s",
+ "run": "sudo docker run -d -p 127.0.0.1:%(host_port)s:%(container_port)s --name %(container_name)s --link %(db_container)s:db --link %(amqp_container)s:amqp %(image_name)s",
  "image_name": "linkup/app"
 }

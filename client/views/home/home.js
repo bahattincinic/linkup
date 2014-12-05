@@ -3,6 +3,10 @@ Template.header.events({
     e.preventDefault();
     $('#newTopicModal').modal('show');
   },
+  'click #create_tag': function (e) {
+    e.preventDefault();
+    $('#newTagModal').modal('show');
+  },
   'click #login_btn': function(e){
     e.preventDefault();
     $('#loginModal').modal('show');

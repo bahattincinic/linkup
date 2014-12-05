@@ -19,6 +19,7 @@ RUN npm install
 ENV PORT 3000
 ENV MONGO_URL mongodb://db:27017/linkup
 ENV ROOT_URL http://linkup.com
+ENV AMQP_HOST amqp
 # expose needed ports
 EXPOSE 3000
 # reset workdir to /

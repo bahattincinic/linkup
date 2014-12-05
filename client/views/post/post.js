@@ -34,6 +34,34 @@ Template.post.events({
     } else {
       throw new Meteor.Error('XXX: missing data');
     }
+  },
+  'submit #tag': function(e, form) {
+    e.preventDefault();
+
+    var name = $.trim(form.find('#tag input[name=name]').value);
+    var title = $.trim(form.find('#tag input[name=title]').value);
+    var desc = $.trim(form.find('#tag textarea[name=desc]').value);
+    var required = !!name && !!title
+    if (!required) {
+      // invalid tag post
+      console.log('invalid');
+      return;
+    }
+
+    Tags.insert({
+      name: name,
+      title: title,
+      description: desc
+    }, insertTag);
+
+    function insertTag(err, tagId) {
+      if (err)
+        console.log(err);
+
+      console.log('inserted tag: ' + tagId);
+      $('#newTagModal').modal('hide');
+      $('#tag')[0].reset();
+    }
   }
 });
 
