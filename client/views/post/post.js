@@ -4,6 +4,7 @@ Template.post.rendered = function() {
 Template.post.events({
   'submit #topic': function (e, form) {
     e.preventDefault();
+
     var title = $.trim(form.find('textarea[name=title]').value);
     var url = $.trim(form.find('input[name=url]').value);
     var channels = $.trim(form.find('input[name=tags]').value);
@@ -41,7 +42,8 @@ Template.post.events({
     var name = $.trim(form.find('#tag input[name=name]').value);
     var title = $.trim(form.find('#tag input[name=title]').value);
     var desc = $.trim(form.find('#tag textarea[name=desc]').value);
-    var required = !!name && !!title
+    var required = !!name && !!title && Meteor.userId();
+
     if (!required) {
       // invalid tag post
       console.log('invalid');
